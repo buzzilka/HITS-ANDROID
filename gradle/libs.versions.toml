@@ -10,6 +10,12 @@ material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
 glideVersion = "4.16.0"
+cameraVersion = "1.1.0-alpha04"
+lifecycleVersion = "1.1.0-alpha04"
+cameraViewVersion = "1.0.0-alpha21"
+lifecycleRuntimeKtxVersion = "2.4.0"
+
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -21,6 +27,10 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glideVersion"}
+androidx-camera = {group = "androidx.camera", name = "camera-camera2", version.ref = "cameraVersion"}
+androidx-camera-lifecycle = {group = "androidx.camera", name = "camera-lifecycle", version.ref = "lifecycleVersion"}
+androidx-camera-view = {group = "androidx.camera", name = "camera-view", version.ref = "cameraViewVersion"}
+androidx-lifecycle = {group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

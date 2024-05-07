@@ -1,29 +1,38 @@
 package com.example.hits_android
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
+import android.util.Log
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.*
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.myapplication.viewmodel.MainViewModel
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private val filePickerLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
-        if (uri!=null){
+        if (uri != null) {
             viewModel.selectFile(uri.toString())
         }
     }
 
-    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val image : ImageView = findViewById(R.id.currentImage)
+        val image: ImageView = findViewById(R.id.currentImage)
         viewModel.selectedFileUri.observe(this) { uri ->
             if (uri != null) {
                 Glide.with(this)
@@ -44,13 +53,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val galleryButton : Button = findViewById(R.id.gallery)
+        val galleryButton: ImageButton = findViewById(R.id.gallery)
         galleryButton.setOnClickListener {
             pickFilesFromGallery()
+        }
+
+        val cameraButton: ImageButton = findViewById(R.id.camera)
+        cameraButton.setOnClickListener {
+
         }
     }
 
     private fun pickFilesFromGallery() {
         filePickerLauncher.launch("image/*")
     }
+
+
 }
