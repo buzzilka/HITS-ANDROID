@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -70,6 +72,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val galleryPermissionRequestLauncher: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                pickFilesFromGallery()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Go to settings and enable storage permission to use this feature",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+    private fun handleGalleryPermission() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                pickFilesFromGallery()
+            }
+            else -> {
+                galleryPermissionRequestLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+        }
+    }
+
     private fun pickFilesFromGallery() {
         filePickerLauncher.launch("image/*")
     }
@@ -96,12 +125,25 @@ class MainActivity : AppCompatActivity() {
 
         val galleryButton: ImageButton = findViewById(R.id.gallery)
         galleryButton.setOnClickListener {
-            pickFilesFromGallery()
+            handleGalleryPermission()
         }
 
         val cameraButton: ImageButton = findViewById(R.id.camera)
         cameraButton.setOnClickListener {
             handleCameraPermission()
+        }
+
+
+        val redactButton: Button = findViewById(R.id.redact)
+        redactButton.setOnClickListener {
+            viewModel.selectedFileUri.value?.let { uri ->
+                val intent = Intent(this@MainActivity, RedactActivity::class.java).apply {
+                    putExtra("imageUri", uri)
+                }
+                startActivity(intent)
+            } ?: run {
+                Toast.makeText(this@MainActivity, "Image URI is null", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

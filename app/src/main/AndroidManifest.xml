@@ -36,6 +36,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RedactActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
