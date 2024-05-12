@@ -95,6 +95,7 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
                 android:text="invert" />
+
             <Button
                 android:id="@+id/red"
                 android:layout_width="wrap_content"
@@ -102,13 +103,7 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
                 android:text="red" />
-            <Button
-                android:id="@+id/blue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="3dp"
-                android:text="blue" />
+
             <Button
                 android:id="@+id/green"
                 android:layout_width="wrap_content"
@@ -116,6 +111,15 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
                 android:text="green" />
+
+            <Button
+                android:id="@+id/blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:text="blue" />
+
             <Button
                 android:id="@+id/sepia"
                 android:layout_width="wrap_content"
@@ -124,16 +128,24 @@
                 android:layout_marginEnd="3dp"
                 android:text="sepia" />
 
+            <Button
+                android:id="@+id/retouch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:text="retouch" />
+
         </LinearLayout>
     </HorizontalScrollView>
 
     <SeekBar
-        android:id="@+id/seekBar"
+        android:id="@+id/seekBar2"
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_marginStart="85dp"
         android:layout_marginBottom="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/seekBarSharpThreshold"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar1"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"/>
 
@@ -169,7 +181,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
-        android:id="@+id/seekBarSharpThreshold"
+        android:id="@+id/seekBar1"
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_marginStart="85dp"
@@ -179,44 +191,70 @@
         android:visibility="gone"/>
 
     <SeekBar
-        android:id="@+id/seekBarSharpRadius"
+        android:id="@+id/seekBar3"
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_marginStart="85dp"
         android:layout_marginBottom="3dp"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar2"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"/>
     <TextView
-        android:id="@+id/textViewSharpThreshold"
+        android:id="@+id/textViewSeekBar1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Threshold"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/seekBarSharpThreshold"
-        app:layout_constraintEnd_toStartOf="@id/seekBarSharpThreshold"
-        app:layout_constraintTop_toTopOf="@id/seekBarSharpThreshold"
+        app:layout_constraintBottom_toBottomOf="@id/seekBar1"
+        app:layout_constraintEnd_toStartOf="@id/seekBar1"
+        app:layout_constraintTop_toTopOf="@id/seekBar1"
         android:layout_marginEnd="8dp"/>
 
     <TextView
-        android:id="@+id/textViewSharpRadius"
+        android:id="@+id/textViewSeekBar3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Radius"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/seekBarSharpRadius"
-        app:layout_constraintEnd_toStartOf="@id/seekBarSharpRadius"
-        app:layout_constraintTop_toTopOf="@id/seekBarSharpRadius"
+        app:layout_constraintBottom_toBottomOf="@id/seekBar3"
+        app:layout_constraintEnd_toStartOf="@id/seekBar3"
+        app:layout_constraintTop_toTopOf="@id/seekBar3"
         android:layout_marginEnd="8dp"/>
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewSeekBar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Intensity"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/seekBar"
-        app:layout_constraintEnd_toStartOf="@id/seekBar"
-        app:layout_constraintTop_toTopOf="@id/seekBar"
+        app:layout_constraintBottom_toBottomOf="@id/seekBar2"
+        app:layout_constraintEnd_toStartOf="@id/seekBar2"
+        app:layout_constraintTop_toTopOf="@id/seekBar2"
+        android:layout_marginEnd="8dp"/>
+    <TextView
+        android:id="@+id/valSeekBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/seekBar1"
+        app:layout_constraintEnd_toEndOf="@id/seekBar1"
+        app:layout_constraintTop_toTopOf="@id/seekBar1"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/valSeekBar3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/seekBar3"
+        app:layout_constraintEnd_toEndOf="@id/seekBar3"
+        app:layout_constraintTop_toTopOf="@id/seekBar3"
+        android:layout_marginEnd="8dp"/>
+    <TextView
+        android:id="@+id/valSeekBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/seekBar2"
+        app:layout_constraintEnd_toEndOf="@id/seekBar2"
+        app:layout_constraintTop_toTopOf="@id/seekBar2"
         android:layout_marginEnd="8dp"/>
 
     <Button
@@ -228,6 +266,17 @@
         android:text="выйти"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/cancelRetouch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="отмена"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.306"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
         android:visibility="gone"/>
 
 

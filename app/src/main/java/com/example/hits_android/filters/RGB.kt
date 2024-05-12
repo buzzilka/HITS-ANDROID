@@ -30,7 +30,6 @@ class RGB {
                 else if (color == "green") pixel = Color.rgb(red, finalColor, blue)
                 else pixel = Color.rgb(red, green, finalColor)
 
-                // Устанавливаем новый пиксель в результирующее изображение
                 resultBitmap.setPixel(x, y, pixel)
             }
         }

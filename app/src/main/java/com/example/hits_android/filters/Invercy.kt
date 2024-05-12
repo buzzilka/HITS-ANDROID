@@ -1,6 +1,7 @@
 package com.example.hits_android.filters
 
 import android.graphics.Bitmap
+import android.graphics.Color
 
 class Invercy {
     fun Inversion(bitmap: Bitmap, threshold: Int): Bitmap {
@@ -12,12 +13,12 @@ class Invercy {
 
         for (i in pixels.indices) {
             val pixel = pixels[i]
-            val alpha = pixel and 0xff000000.toInt()
-            val red = if ((pixel shr 16 and 0xff) < thresholdedValue) 255 else 0
-            val green = if ((pixel shr 8 and 0xff) < thresholdedValue) 255 else 0
-            val blue = if ((pixel and 0xff) < thresholdedValue) 255 else 0
+            val alpha = Color.alpha(pixel)
+            val red = if (Color.red(pixel) < thresholdedValue) 255 else 0
+            val green = if (Color.green(pixel) < thresholdedValue) 255 else 0
+            val blue = if (Color.blue(pixel) < thresholdedValue) 255 else 0
 
-            pixels[i] = alpha or (red shl 16) or (green shl 8) or blue
+            pixels[i] = Color.argb(alpha, red, green, blue)
         }
         resultBitmap.setPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
         return resultBitmap
