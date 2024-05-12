@@ -72,33 +72,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val galleryPermissionRequestLauncher: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                pickFilesFromGallery()
-            } else {
-                Toast.makeText(
-                    this,
-                    "Go to settings and enable storage permission to use this feature",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-    private fun handleGalleryPermission() {
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                pickFilesFromGallery()
-            }
-            else -> {
-                galleryPermissionRequestLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-        }
-    }
-
     private fun pickFilesFromGallery() {
         filePickerLauncher.launch("image/*")
     }
@@ -125,7 +98,7 @@ class MainActivity : AppCompatActivity() {
 
         val galleryButton: ImageButton = findViewById(R.id.gallery)
         galleryButton.setOnClickListener {
-            handleGalleryPermission()
+           pickFilesFromGallery()
         }
 
         val cameraButton: ImageButton = findViewById(R.id.camera)
