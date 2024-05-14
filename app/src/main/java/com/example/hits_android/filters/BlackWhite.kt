@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 
 class BlackWhite {
-    fun blackAndWhite(bitmap: Bitmap, intensity:Double): Bitmap {
+    fun blackAndWhite(bitmap: Bitmap, intensity:Double, progressCallback: () -> Unit): Bitmap {
         val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
 
         for (x in 0 until bitmap.width) {
@@ -14,6 +14,7 @@ class BlackWhite {
                 resultBitmap.setPixel(x, y, Color.rgb(color, color, color))
             }
         }
+        progressCallback()
         return resultBitmap
     }
 }

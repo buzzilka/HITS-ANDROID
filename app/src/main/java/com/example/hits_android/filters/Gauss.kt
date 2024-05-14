@@ -12,7 +12,7 @@ import kotlin.math.min
 import kotlin.math.sqrt
 
 class Gauss {
-    suspend fun gaussianBlur(image: Bitmap, radius: Int): Bitmap = coroutineScope {
+    suspend fun gaussianBlur(image: Bitmap, radius: Int, progressCallback: () -> Unit): Bitmap = coroutineScope {
         val sigma:Double = radius / 3.0
         val kernel = DoubleArray(2 * radius + 1)
         var sum: Double = 0.0
@@ -63,6 +63,7 @@ class Gauss {
         }
 
         resultBitmap.setPixels(blurredPixels, 0, image.width, 0, 0, image.width, image.height)
+        progressCallback()
         return@coroutineScope resultBitmap
     }
 }

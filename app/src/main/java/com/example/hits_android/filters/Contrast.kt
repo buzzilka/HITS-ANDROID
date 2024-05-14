@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 
 class Contrast{
-    fun contrast(image: Bitmap, contrastVal:Int) : Bitmap {
+    fun contrast(image: Bitmap, contrastVal:Int, progressCallback: () -> Unit) : Bitmap {
         val resultBitmap = Bitmap.createBitmap(image.width, image.height, Bitmap.Config.ARGB_8888)
         val pixels = IntArray(image.width * image.height)
         image.getPixels(pixels, 0, image.width, 0, 0, image.width, image.height)
@@ -25,6 +25,7 @@ class Contrast{
         }
 
         resultBitmap.setPixels(contrastPixels, 0, image.width, 0, 0, image.width, image.height)
+        progressCallback()
         return resultBitmap
     }
 }

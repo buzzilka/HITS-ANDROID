@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 
 class RGB {
-    fun rgbFilter(bitmap: Bitmap, intensity: Int, color:String): Bitmap {
+    fun rgbFilter(bitmap: Bitmap, intensity: Int, color:String, progressCallback: () -> Unit): Bitmap {
         val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
 
         for (x in 0 until bitmap.width) {
@@ -33,7 +33,7 @@ class RGB {
                 resultBitmap.setPixel(x, y, pixel)
             }
         }
-
+        progressCallback()
         return resultBitmap
     }
 }

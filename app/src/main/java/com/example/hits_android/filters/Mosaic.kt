@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 
 class Mosaic {
-    fun mosaic(image: Bitmap, px: Int): Bitmap {
+    fun mosaic(image: Bitmap, px: Int, progressCallback: () -> Unit): Bitmap {
         val resultBitmap = Bitmap.createBitmap(image.width, image.height, Bitmap.Config.ARGB_8888)
         val pixels = IntArray(image.width * image.height)
         image.getPixels(pixels, 0, image.width, 0, 0, image.width, image.height)
@@ -50,6 +50,7 @@ class Mosaic {
         }
 
         resultBitmap.setPixels(mosaicPixels, 0, image.width, 0, 0, image.width, image.height)
+        progressCallback()
         return resultBitmap
     }
 }
