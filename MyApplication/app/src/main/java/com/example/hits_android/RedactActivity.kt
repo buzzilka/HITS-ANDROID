@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MotionEvent
@@ -20,6 +21,7 @@ import com.example.myapplication.viewmodel.MainViewModel
 import com.example.hits_android.filters.*
 import com.example.hits_android.retouching.Retouch
 import com.example.hits_android.face.Face
+import com.example.hits_android.rotate.Rotate
 import com.example.hits_android.unsharpMask.Unsharp
 import androidx.lifecycle.ViewModelProvider
 import androidx.core.graphics.drawable.toBitmap
@@ -83,6 +85,7 @@ class RedactActivity : AppCompatActivity() {
         val buttonExit: Button = findViewById(R.id.exit)
         val buttonApply: Button = findViewById(R.id.apply)
         val buttonCancelRetouch: Button = findViewById(R.id.cancelRetouch)
+        val buttonRotation90: Button = findViewById(R.id.rotation90)
 
         var changeList = ArrayList<Bitmap>()
 
@@ -93,6 +96,7 @@ class RedactActivity : AppCompatActivity() {
             seekBar3.visibility = View.GONE
             buttonExit.visibility = View.VISIBLE
             buttonCancelRetouch.visibility = View.GONE
+            buttonRotation90.visibility = View.GONE
 
             image.setOnTouchListener(null)
         }
@@ -103,6 +107,7 @@ class RedactActivity : AppCompatActivity() {
             seekBar1.visibility = View.GONE
             seekBar3.visibility = View.GONE
             buttonCancelRetouch.visibility = View.GONE
+            buttonRotation90.visibility = View.GONE
         }
 
         buttonApply.setOnClickListener {
@@ -486,6 +491,7 @@ class RedactActivity : AppCompatActivity() {
             buttonApply.visibility = View.VISIBLE
             buttonExit.visibility = View.VISIBLE
             buttonCancelRetouch.visibility = View.GONE
+            buttonRotation90.visibility = View.GONE
 
             image.setOnTouchListener(null)
 
@@ -605,6 +611,7 @@ class RedactActivity : AppCompatActivity() {
             buttonApply.visibility = View.VISIBLE
             buttonExit.visibility = View.VISIBLE
             buttonCancelRetouch.visibility = View.VISIBLE
+            buttonRotation90.visibility = View.GONE
 
             seekBar1.max = 100
             seekBar3.max = 95
@@ -698,6 +705,60 @@ class RedactActivity : AppCompatActivity() {
                     //}
             image.setImageBitmap(changeBitmap)
 
+        }
+        var angleFor90 = 90
+        var flag = false
+        buttonRotation90.setOnClickListener {
+            val rotate = Rotate()
+            flag = true
+            changeBitmap = rotate.rotate(originalBitmap, angleFor90.toFloat(), flag)
+            image.setImageBitmap(changeBitmap)
+            angleFor90 += 90
+            if (angleFor90 == 0) {
+                angleFor90 = 90
+            }
+        }
+
+
+        val buttonRotate: Button = findViewById(R.id.rotate)
+        buttonRotate.setOnClickListener {
+            flag = false
+            setOriginalBitmap()
+            regVisibile()
+            buttonRotation90.visibility = View.VISIBLE
+
+            seekBar2.max = 360
+            seekBar2.progress = 0
+            val textSeekBar2: TextView = findViewById(R.id.textViewSeekBar2)
+            textSeekBar2.text = "Angle"
+
+            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
+            valSeekBar2.text = (seekBar2.progress).toString()
+
+            val rotate = Rotate()
+            changeBitmap = rotate.rotate(originalBitmap, seekBar2.progress.toFloat(), flag)
+            image.setImageBitmap(changeBitmap)
+
+            seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    val angle = seekBar?.progress ?: 0
+                    valSeekBar2.text = (seekBar2.progress).toString()
+                    changeBitmap = rotate.rotate(originalBitmap, angle.toFloat(), flag)
+                    image.setImageBitmap(changeBitmap)
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    val angle = seekBar?.progress ?: 0
+                    valSeekBar2.text = (seekBar2.progress).toString()
+                    changeBitmap = rotate.rotate(originalBitmap, angle.toFloat(), flag)
+                    image.setImageBitmap(changeBitmap)
+                }
+            })
         }
 
     }

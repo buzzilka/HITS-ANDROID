@@ -56,6 +56,14 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/rotate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:text="rotate" />
+
+            <Button
                 android:id="@+id/gauss"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -248,6 +256,22 @@
         android:layout_marginStart="250dp"
         android:layout_marginTop="68dp"
         android:text="отмена"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+        app:layout_constraintVertical_bias="0.069"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/rotation90"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="68dp"
+        android:text="поворот"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
