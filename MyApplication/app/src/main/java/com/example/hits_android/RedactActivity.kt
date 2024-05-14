@@ -84,13 +84,27 @@ class RedactActivity : AppCompatActivity() {
         val buttonApply: Button = findViewById(R.id.apply)
         val buttonCancelRetouch: Button = findViewById(R.id.cancelRetouch)
 
+        val textSeekBar2: TextView = findViewById(R.id.textViewSeekBar2)
+        val textSeekBar1: TextView = findViewById(R.id.textViewSeekBar1)
+        val textSeekBar3: TextView = findViewById(R.id.textViewSeekBar3)
+
+        val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
+        val valSeekBar1: TextView = findViewById(R.id.valSeekBar1)
+        val valSeekBar3: TextView = findViewById(R.id.valSeekBar3)
+
         var changeList = ArrayList<Bitmap>()
 
         fun regVisibile() {
             seekBar2.visibility = View.VISIBLE
+            textSeekBar2.visibility = View.VISIBLE
+            valSeekBar2.visibility = View.VISIBLE
             buttonApply.visibility = View.VISIBLE
             seekBar1.visibility = View.GONE
+            textSeekBar1.visibility = View.GONE
+            valSeekBar1.visibility = View.GONE
             seekBar3.visibility = View.GONE
+            textSeekBar3.visibility = View.GONE
+            valSeekBar3.visibility = View.GONE
             buttonExit.visibility = View.VISIBLE
             buttonCancelRetouch.visibility = View.GONE
 
@@ -98,10 +112,16 @@ class RedactActivity : AppCompatActivity() {
         }
         fun regGone() {
             seekBar2.visibility = View.GONE
+            textSeekBar2.visibility = View.GONE
+            valSeekBar2.visibility = View.GONE
             buttonApply.visibility = View.GONE
             buttonExit.visibility = View.GONE
             seekBar1.visibility = View.GONE
+            textSeekBar1.visibility = View.GONE
+            valSeekBar1.visibility = View.GONE
             seekBar3.visibility = View.GONE
+            textSeekBar3.visibility = View.GONE
+            valSeekBar3.visibility = View.GONE
             buttonCancelRetouch.visibility = View.GONE
         }
 
@@ -128,7 +148,6 @@ class RedactActivity : AppCompatActivity() {
             regVisibile()
             seekBar2.max = 99
             seekBar2.progress = 19
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress + 1).toString()
 
             val gauss = Gauss()
@@ -171,7 +190,6 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 95
             seekBar2.progress = 10
 
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress + 5).toString()
 
             val mosaic = Mosaic()
@@ -210,7 +228,6 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 200
             seekBar2.progress = 100
 
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress - 100).toString()
 
             val contrast = Contrast()
@@ -249,7 +266,6 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 100
             seekBar2.progress = 50
 
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress / 100.0).toString()
 
             val blackWhite = BlackWhite()
@@ -288,7 +304,6 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 255
             seekBar2.progress = 150
 
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress).toString()
 
             val inverse = Invercy()
@@ -328,7 +343,6 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 510
             seekBar2.progress = 255
 
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress - 255).toString()
 
             val rgb = RGB()
@@ -366,7 +380,6 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 510
             seekBar2.progress = 255
 
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress - 255).toString()
 
             val rgb = RGB()
@@ -404,7 +417,6 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 510
             seekBar2.progress = 255
 
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress - 255).toString()
 
             val rgb = RGB()
@@ -443,7 +455,6 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 100
             seekBar2.progress = 50
 
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress).toString()
 
             val sepia = Sepia()
@@ -480,8 +491,14 @@ class RedactActivity : AppCompatActivity() {
             setOriginalBitmap()
 
             seekBar2.visibility = View.VISIBLE
+            textSeekBar2.visibility = View.VISIBLE
+            valSeekBar2.visibility = View.VISIBLE
             seekBar1.visibility = View.VISIBLE
+            textSeekBar1.visibility = View.VISIBLE
+            valSeekBar1.visibility = View.VISIBLE
             seekBar3.visibility = View.VISIBLE
+            textSeekBar3.visibility = View.VISIBLE
+            valSeekBar3.visibility = View.VISIBLE
 
             buttonApply.visibility = View.VISIBLE
             buttonExit.visibility = View.VISIBLE
@@ -489,10 +506,8 @@ class RedactActivity : AppCompatActivity() {
 
             image.setOnTouchListener(null)
 
-            val textThreshold: TextView = findViewById(R.id.textViewSeekBar1)
-            textThreshold.text = "Threshold"
-            val textRadius: TextView = findViewById(R.id.textViewSeekBar3)
-            textRadius.text = "Radius"
+            textSeekBar1.text = "Threshold"
+            textSeekBar3.text = "Radius"
 
             seekBar3.max = 99
             seekBar3.progress = 4
@@ -504,11 +519,8 @@ class RedactActivity : AppCompatActivity() {
             var radius: Int = seekBar3.progress
             var threshold: Int = seekBar1.progress
 
-            val valSeekBar1: TextView = findViewById(R.id.valSeekBar1)
             valSeekBar1.text = (seekBar1.progress).toString()
-            val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress / 100.0).toString()
-            val valSeekBar3: TextView = findViewById(R.id.valSeekBar3)
             valSeekBar3.text = (seekBar3.progress + 1).toString()
 
             val sharp = Unsharp()
@@ -599,8 +611,14 @@ class RedactActivity : AppCompatActivity() {
             changeList.add(originalBitmap)
 
             seekBar2.visibility = View.GONE
+            textSeekBar2.visibility = View.GONE
+            valSeekBar2.visibility = View.GONE
             seekBar1.visibility = View.VISIBLE
+            textSeekBar1.visibility = View.VISIBLE
+            valSeekBar1.visibility = View.VISIBLE
             seekBar3.visibility = View.VISIBLE
+            textSeekBar3.visibility = View.VISIBLE
+            valSeekBar3.visibility = View.VISIBLE
 
             buttonApply.visibility = View.VISIBLE
             buttonExit.visibility = View.VISIBLE
@@ -609,15 +627,11 @@ class RedactActivity : AppCompatActivity() {
             seekBar1.max = 100
             seekBar3.max = 95
 
-            val valSeekBar1: TextView = findViewById(R.id.valSeekBar1)
             valSeekBar1.text = (seekBar1.progress).toString()
-            val valSeekBar3: TextView = findViewById(R.id.valSeekBar3)
             valSeekBar3.text = (seekBar3.progress + 5).toString()
 
-            val textIntencity: TextView = findViewById(R.id.textViewSeekBar1)
-            textIntencity.text = "Intencity"
-            val textBrushSize: TextView = findViewById(R.id.textViewSeekBar3)
-            textBrushSize.text = "Brush Size"
+            textSeekBar1.text = "Intencity"
+            textSeekBar3.text = "Brush Size"
 
             var brushSize: Int = seekBar1.progress
             var intencity: Int = seekBar3.progress
@@ -692,11 +706,11 @@ class RedactActivity : AppCompatActivity() {
             regGone()
             val face = Face()
             //loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = face.face(originalBitmap)
+            //changeBitmap = face.face(originalBitmap)
                     //{
                     //    loadingOverlay.visibility = View.GONE
                     //}
-            image.setImageBitmap(changeBitmap)
+            //image.setImageBitmap(changeBitmap)
 
         }
 
