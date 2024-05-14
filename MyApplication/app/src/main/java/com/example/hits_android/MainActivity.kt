@@ -104,6 +104,11 @@ class MainActivity : AppCompatActivity() {
             handleCameraPermission()
         }
 
+        val splineButton : Button = findViewById(R.id.button)
+        splineButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, SplineActivity::class.java)
+            startActivity(intent)
+        }
 
         val redactButton: Button = findViewById(R.id.redact)
         redactButton.setOnClickListener {

@@ -39,6 +39,9 @@
         <activity
             android:name=".RedactActivity"
             android:exported="false" />
+        <activity
+            android:name=".SplineActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
