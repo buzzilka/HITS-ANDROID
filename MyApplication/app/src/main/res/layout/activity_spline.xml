@@ -66,6 +66,7 @@
     <Button
         android:id="@+id/deletePoint"
         android:layout_width="0dp"
+        android:layout_height="45dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="50dp"
         android:text="delete"
@@ -73,7 +74,7 @@
         app:layout_constraintEnd_toStartOf="@+id/spline"
         app:layout_constraintStart_toEndOf="@+id/replacePoint"
         app:layout_constraintTop_toBottomOf="@+id/my_custom_view"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"  />
 
     <Button
         android:id="@+id/addPoint"
