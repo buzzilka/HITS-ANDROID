@@ -9,9 +9,12 @@
 
     <Button
         android:id="@+id/nazad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="250dp"
+        android:layout_marginBottom="30dp"
         android:text="назад"
         app:layout_constraintBottom_toTopOf="@+id/my_custom_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="20dp"
         android:background="#454545"
         app:layout_constraintBottom_toTopOf="@+id/replacePoint"
@@ -36,8 +39,10 @@
 
     <Button
         android:id="@+id/replacePoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
         android:text="replace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/deletePoint"
@@ -47,8 +52,10 @@
 
     <Button
         android:id="@+id/spline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
         android:text="spline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,8 +65,9 @@
 
     <Button
         android:id="@+id/deletePoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
         android:text="delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/spline"
@@ -69,8 +77,10 @@
 
     <Button
         android:id="@+id/addPoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
         android:text="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/replacePoint"
