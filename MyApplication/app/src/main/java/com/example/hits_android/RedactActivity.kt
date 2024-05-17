@@ -4,9 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.viewmodel.MainViewModel
 import com.example.hits_android.filters.*
 import com.example.hits_android.retouching.Retouch
-import com.example.hits_android.face.Face
+import com.example.hits_android.detect.*
 import com.example.hits_android.rotate.Rotate
 import com.example.hits_android.unsharpMask.Unsharp
 import androidx.lifecycle.ViewModelProvider
@@ -100,6 +100,7 @@ class RedactActivity : AppCompatActivity() {
         fun regVisibile() {
             seekBar2.visibility = View.VISIBLE
             textSeekBar2.visibility = View.VISIBLE
+            textSeekBar2.text = "Intencity"
             valSeekBar2.visibility = View.VISIBLE
             buttonApply.visibility = View.VISIBLE
             seekBar1.visibility = View.GONE
@@ -198,10 +199,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress + 5).toString()
 
             val mosaic = Mosaic()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = mosaic.mosaic(originalBitmap, seekBar2.progress + 5){
-                loadingOverlay.visibility = View.GONE
-            }
+            changeBitmap = mosaic.mosaic(originalBitmap, seekBar2.progress + 5)
             image.setImageBitmap(changeBitmap)
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -210,17 +208,17 @@ class RedactActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val mosaicSize = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress + 5).toString()
+                    changeBitmap = mosaic.mosaic(originalBitmap, mosaicSize + 5)
+                    image.setImageBitmap(changeBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val mosaicSize = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress + 5).toString()
-                    loadingOverlay.visibility = View.VISIBLE
-                    changeBitmap = mosaic.mosaic(originalBitmap, mosaicSize + 5){
-                        loadingOverlay.visibility = View.GONE
-                    }
+                    changeBitmap = mosaic.mosaic(originalBitmap, mosaicSize + 5)
                     image.setImageBitmap(changeBitmap)
                 }
             })
@@ -236,10 +234,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress - 100).toString()
 
             val contrast = Contrast()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = contrast.contrast(originalBitmap, seekBar2.progress - 100){
-                loadingOverlay.visibility = View.GONE
-            }
+            changeBitmap = contrast.contrast(originalBitmap, seekBar2.progress - 100)
             image.setImageBitmap(changeBitmap)
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -248,17 +243,17 @@ class RedactActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val contrastVal = seekBar?.progress ?: 100
                     valSeekBar2.text = (seekBar2.progress - 100).toString()
+                    changeBitmap = contrast.contrast(originalBitmap, contrastVal - 100)
+                    image.setImageBitmap(changeBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val contrastVal = seekBar?.progress ?: 100
                     valSeekBar2.text = (seekBar2.progress - 100).toString()
-                    loadingOverlay.visibility = View.VISIBLE
-                    changeBitmap = contrast.contrast(originalBitmap, contrastVal - 100){
-                        loadingOverlay.visibility = View.GONE
-                    }
+                    changeBitmap = contrast.contrast(originalBitmap, contrastVal - 100)
                     image.setImageBitmap(changeBitmap)
                 }
             })
@@ -274,11 +269,10 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress / 100.0).toString()
 
             val blackWhite = BlackWhite()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = blackWhite.blackAndWhite(originalBitmap, seekBar2.progress / 100.0){
-                loadingOverlay.visibility = View.GONE
+            GlobalScope.launch(Dispatchers.Main) {
+                changeBitmap = blackWhite.blackAndWhite(originalBitmap, seekBar2.progress / 100.0)
+                image.setImageBitmap(changeBitmap)
             }
-            image.setImageBitmap(changeBitmap)
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -286,18 +280,22 @@ class RedactActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val intensity = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress / 100.0).toString()
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = blackWhite.blackAndWhite(originalBitmap, intensity / 100.0)
+                        image.setImageBitmap(changeBitmap)
+                    }
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val intensity = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress / 100.0).toString()
-                    loadingOverlay.visibility = View.VISIBLE
-                    changeBitmap = blackWhite.blackAndWhite(originalBitmap, intensity / 100.0){
-                        loadingOverlay.visibility = View.GONE
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = blackWhite.blackAndWhite(originalBitmap, intensity / 100.0)
+                        image.setImageBitmap(changeBitmap)
                     }
-                    image.setImageBitmap(changeBitmap)
                 }
             })
         }
@@ -312,10 +310,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress).toString()
 
             val inverse = Invercy()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = inverse.Inversion(originalBitmap, seekBar2.progress){
-                loadingOverlay.visibility = View.GONE
-            }
+            changeBitmap = inverse.Inversion(originalBitmap, seekBar2.progress)
             image.setImageBitmap(changeBitmap)
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -324,17 +319,17 @@ class RedactActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val threshold = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
+                    changeBitmap = inverse.Inversion(originalBitmap, threshold)
+                    image.setImageBitmap(changeBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val threshold = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    loadingOverlay.visibility = View.VISIBLE
-                    changeBitmap = inverse.Inversion(originalBitmap, threshold){
-                        loadingOverlay.visibility = View.GONE
-                    }
+                    changeBitmap = inverse.Inversion(originalBitmap, threshold)
                     image.setImageBitmap(changeBitmap)
                 }
             })
@@ -351,11 +346,10 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress - 255).toString()
 
             val rgb = RGB()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = rgb.rgbFilter(originalBitmap, seekBar2.progress - 255, "red"){
-                loadingOverlay.visibility = View.GONE
+            GlobalScope.launch(Dispatchers.Main) {
+                changeBitmap = rgb.rgbFilter(originalBitmap, seekBar2.progress - 255, "red")
+                image.setImageBitmap(changeBitmap)
             }
-            image.setImageBitmap(changeBitmap)
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -363,18 +357,22 @@ class RedactActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val intensity = seekBar?.progress ?: 255
                     valSeekBar2.text = (seekBar2.progress - 255).toString()
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "red")
+                        image.setImageBitmap(changeBitmap)
+                    }
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val intensity = seekBar?.progress ?: 255
                     valSeekBar2.text = (seekBar2.progress - 255).toString()
-                    loadingOverlay.visibility = View.VISIBLE
-                    changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "red"){
-                        loadingOverlay.visibility = View.GONE
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "red")
+                        image.setImageBitmap(changeBitmap)
                     }
-                    image.setImageBitmap(changeBitmap)
                 }
             })
         }
@@ -388,11 +386,10 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress - 255).toString()
 
             val rgb = RGB()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = rgb.rgbFilter(originalBitmap, seekBar2.progress - 255, "green"){
-                loadingOverlay.visibility = View.GONE
+            GlobalScope.launch(Dispatchers.Main) {
+                changeBitmap = rgb.rgbFilter(originalBitmap, seekBar2.progress - 255, "green")
+                image.setImageBitmap(changeBitmap)
             }
-            image.setImageBitmap(changeBitmap)
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -400,18 +397,22 @@ class RedactActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val intensity = seekBar?.progress ?: 255
                     valSeekBar2.text = (seekBar2.progress - 255).toString()
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "green")
+                        image.setImageBitmap(changeBitmap)
+                    }
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val intensity = seekBar?.progress ?: 255
                     valSeekBar2.text = (seekBar2.progress - 255).toString()
-                    loadingOverlay.visibility = View.VISIBLE
-                    changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "green"){
-                        loadingOverlay.visibility = View.GONE
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "green")
+                        image.setImageBitmap(changeBitmap)
                     }
-                    image.setImageBitmap(changeBitmap)
                 }
             })
         }
@@ -425,11 +426,10 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress - 255).toString()
 
             val rgb = RGB()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = rgb.rgbFilter(originalBitmap, seekBar2.progress - 255, "blue"){
-                loadingOverlay.visibility = View.GONE
+            GlobalScope.launch(Dispatchers.Main) {
+                changeBitmap = rgb.rgbFilter(originalBitmap, seekBar2.progress - 255, "blue")
+                image.setImageBitmap(changeBitmap)
             }
-            image.setImageBitmap(changeBitmap)
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -437,18 +437,22 @@ class RedactActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val intensity = seekBar?.progress ?: 255
                     valSeekBar2.text = (seekBar2.progress - 255).toString()
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "blue")
+                        image.setImageBitmap(changeBitmap)
+                    }
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val intensity = seekBar?.progress ?: 255
                     valSeekBar2.text = (seekBar2.progress - 255).toString()
-                    loadingOverlay.visibility = View.VISIBLE
-                    changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "blue"){
-                        loadingOverlay.visibility = View.GONE
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, "blue")
+                        image.setImageBitmap(changeBitmap)
                     }
-                    image.setImageBitmap(changeBitmap)
                 }
             })
         }
@@ -463,10 +467,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress).toString()
 
             val sepia = Sepia()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = sepia.sepiaFilter(originalBitmap, seekBar2.progress){
-                loadingOverlay.visibility = View.GONE
-            }
+            changeBitmap = sepia.sepiaFilter(originalBitmap, seekBar2.progress)
             image.setImageBitmap(changeBitmap)
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -475,17 +476,17 @@ class RedactActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    val sepiaDepth = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
+                    changeBitmap = sepia.sepiaFilter(originalBitmap, sepiaDepth)
+                    image.setImageBitmap(changeBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val sepiaDepth = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    loadingOverlay.visibility = View.VISIBLE
-                    changeBitmap = sepia.sepiaFilter(originalBitmap, sepiaDepth){
-                        loadingOverlay.visibility = View.GONE
-                    }
+                    changeBitmap = sepia.sepiaFilter(originalBitmap, sepiaDepth)
                     image.setImageBitmap(changeBitmap)
                 }
             })
@@ -711,15 +712,23 @@ class RedactActivity : AppCompatActivity() {
         buttonFace.setOnClickListener {
             setOriginalBitmap()
             regGone()
+            buttonApply.visibility = View.VISIBLE
             val face = Face()
-            //loadingOverlay.visibility = View.VISIBLE
-            //changeBitmap = face.face(originalBitmap)
-                    //{
-                    //    loadingOverlay.visibility = View.GONE
-                    //}
-            //image.setImageBitmap(changeBitmap)
-
+            changeBitmap = face.apply(originalBitmap, this)
+            image.setImageBitmap(changeBitmap)
         }
+
+        val buttonPerson: Button = findViewById(R.id.person)
+        buttonPerson.setOnClickListener {
+            setOriginalBitmap()
+            regGone()
+            buttonApply.visibility = View.VISIBLE
+            val person = Person()
+            changeBitmap = person.apply(originalBitmap, this)
+            image.setImageBitmap(changeBitmap)
+        }
+
+
         var angleFor90 = 90
         var flag = false
         buttonRotation90.setOnClickListener {

@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 
 class Invercy {
-    fun Inversion(bitmap: Bitmap, threshold: Int, progressCallback: () -> Unit): Bitmap {
+    fun Inversion(bitmap: Bitmap, threshold: Int): Bitmap {
         val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         val pixels = IntArray(bitmap.width * bitmap.height)
         bitmap.getPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
@@ -21,7 +21,6 @@ class Invercy {
             pixels[i] = Color.argb(alpha, red, green, blue)
         }
         resultBitmap.setPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
-        progressCallback()
         return resultBitmap
     }
 }

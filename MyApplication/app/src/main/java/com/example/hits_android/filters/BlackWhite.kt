@@ -2,19 +2,43 @@ package com.example.hits_android.filters
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 class BlackWhite {
-    fun blackAndWhite(bitmap: Bitmap, intensity:Double, progressCallback: () -> Unit): Bitmap {
-        val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
+    suspend fun blackAndWhite(bitmap: Bitmap, intensity: Double): Bitmap = coroutineScope {
+        val resultBitmap = bitmap.copy(bitmap.config, true)
+        val pixels = IntArray(bitmap.width * bitmap.height)
+        bitmap.getPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
 
-        for (x in 0 until bitmap.width) {
-            for (y in 0 until bitmap.height) {
-                val pixel = bitmap.getPixel(x, y)
-                val color =((Color.red(pixel) * 0.3 + Color.green(pixel) * 0.59 + Color.blue(pixel) * 0.11) * intensity).toInt().coerceIn(0, 255)
-                resultBitmap.setPixel(x, y, Color.rgb(color, color, color))
+        val chunkSize = pixels.size / 2
+        val deferredResults = mutableListOf<Deferred<Unit>>()
+
+        val deferredJob1 = async(Dispatchers.Default) {
+            for (i in 0 until chunkSize) {
+                val pixel = pixels[i]
+                val gray = (Color.red(pixel) * 0.3 + Color.green(pixel) * 0.59 + Color.blue(pixel) * 0.11) * intensity
+                pixels[i] = Color.rgb(gray.toInt().coerceIn(0, 255), gray.toInt().coerceIn(0, 255), gray.toInt().coerceIn(0, 255))
             }
         }
-        progressCallback()
-        return resultBitmap
+        deferredResults.add(deferredJob1)
+
+        val deferredJob2 = async(Dispatchers.Default) {
+            for (i in chunkSize until pixels.size) {
+                val pixel = pixels[i]
+                val gray = (Color.red(pixel) * 0.3 + Color.green(pixel) * 0.59 + Color.blue(pixel) * 0.11) * intensity
+                pixels[i] = Color.rgb(gray.toInt().coerceIn(0, 255), gray.toInt().coerceIn(0, 255), gray.toInt().coerceIn(0, 255))
+            }
+        }
+        deferredResults.add(deferredJob2)
+
+        deferredResults.awaitAll()
+
+        resultBitmap.setPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+
+        return@coroutineScope resultBitmap
     }
 }
