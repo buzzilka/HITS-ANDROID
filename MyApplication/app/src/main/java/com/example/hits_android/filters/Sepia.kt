@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 
 class Sepia {
-    fun sepiaFilter(bitmap: Bitmap, sepiaDepth: Int, progressCallback: () -> Unit): Bitmap {
+    fun sepiaFilter(bitmap: Bitmap, sepiaDepth: Int): Bitmap {
         val resultBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
         val pixels = IntArray(bitmap.width * bitmap.height)
         bitmap.getPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
@@ -35,7 +35,6 @@ class Sepia {
         }
 
         resultBitmap.setPixels(pixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
-        progressCallback()
         return resultBitmap
     }
 }
