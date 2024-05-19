@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -178,8 +179,8 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val radius = seekBar?.progress ?: 0
                     loadingOverlay.visibility = View.VISIBLE
+                    valSeekBar2.text = (seekBar2.progress + 1).toString()
                     GlobalScope.launch(Dispatchers.Main) {
-                        valSeekBar2.text = (seekBar2.progress + 1).toString()
                         changeBitmap = gauss.gaussianBlur(originalBitmap, radius + 1){
                             loadingOverlay.visibility = View.GONE
                         }
@@ -673,6 +674,7 @@ class RedactActivity : AppCompatActivity() {
                 }
             })
 
+
             val retouch = Retouch()
             changeBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true)
             image.setImageBitmap(changeBitmap)
@@ -681,12 +683,23 @@ class RedactActivity : AppCompatActivity() {
                 val x = event.x
                 val y = event.y
 
-
                 when (event.action) {
                     MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                        val curX = (x * originalBitmap.height / image.height).toInt()
-                        val curY = (y * originalBitmap.height / image.height).toInt()
-                        changeBitmap = retouch.applyRetouching(curX.toFloat(), curY.toFloat(), changeBitmap, intencity, brushSize + 5)
+                        var curX : Float
+                        var curY : Float
+                        if (originalBitmap.width.toFloat() / image.width.toFloat() > originalBitmap.height.toFloat() / image.height.toFloat()) {
+                            curX = (x - (image.width.toFloat() - image.width.toFloat()) / 2) / (image.width.toFloat() / originalBitmap.width.toFloat())
+                            curY = (y - (image.height.toFloat() - (image.width.toFloat() / originalBitmap.width.toFloat()) * originalBitmap.height.toFloat()) / 2) / (image.width.toFloat() / originalBitmap.width.toFloat())
+                        }
+                        else {
+                            curX = (x - (image.width.toFloat() - (image.height.toFloat() / originalBitmap.height.toFloat()) * originalBitmap.width.toFloat()) / 2) / (image.height.toFloat() / originalBitmap.height.toFloat())
+                            curY = (y - (image.height.toFloat() - image.height.toFloat() ) / 2) / (image.height.toFloat() / originalBitmap.height.toFloat())
+                        }
+
+                        curX = curX.coerceIn(0F, originalBitmap.width.toFloat() - 1)
+                        curY = curY.coerceIn(0F, originalBitmap.height.toFloat() - 1)
+
+                        changeBitmap = retouch.applyRetouching(curX, curY, changeBitmap, intencity, brushSize + 5)
                         image.setImageBitmap(changeBitmap)
                         true
                     }

@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import kotlin.math.max
+import kotlin.math.min
 
 class Retouch {
     fun applyRetouching(x: Float, y: Float, retouchedBitmap: Bitmap, intencity: Int, brushSize: Int) : Bitmap {

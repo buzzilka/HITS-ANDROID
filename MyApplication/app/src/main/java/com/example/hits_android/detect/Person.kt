@@ -54,10 +54,10 @@ class Person {
         cascadeClassifier.detectMultiScale(
             grayImage,
             rectangles,
-            1.1,
-            5,
+            1.05,
+            6,
             0,
-            Size(40.0, 40.0),
+            Size(30.0, 30.0),
             Size()
         )
 
