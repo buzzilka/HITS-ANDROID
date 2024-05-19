@@ -56,8 +56,8 @@ class Face {
         cascadeClassifier.detectMultiScale(
             grayImage,
             rectangles,
-            1.1,
-            5,
+            1.07,
+            4,
             0,
             Size(40.0, 40.0),
             Size()
