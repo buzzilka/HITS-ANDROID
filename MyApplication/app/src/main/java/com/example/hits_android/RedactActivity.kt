@@ -749,12 +749,12 @@ class RedactActivity : AppCompatActivity() {
 
 
         var angleFor90 = 90
-        var flag = false
         buttonRotation90.setOnClickListener {
             val rotate = Rotate()
-            flag = true
-            changeBitmap = rotate.rotate(originalBitmap, angleFor90.toFloat(), flag)
-            image.setImageBitmap(changeBitmap)
+            GlobalScope.launch(Dispatchers.Main) {
+                changeBitmap = rotate.rotate(originalBitmap, angleFor90.toFloat())
+                image.setImageBitmap(changeBitmap)
+            }
             angleFor90 += 90
             if (angleFor90 == 0) {
                 angleFor90 = 90
@@ -764,7 +764,6 @@ class RedactActivity : AppCompatActivity() {
 
         val buttonRotate: Button = findViewById(R.id.rotate)
         buttonRotate.setOnClickListener {
-            flag = false
             setOriginalBitmap()
             regVisibile()
             buttonRotation90.visibility = View.VISIBLE
@@ -778,8 +777,10 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress).toString()
 
             val rotate = Rotate()
-            changeBitmap = rotate.rotate(originalBitmap, seekBar2.progress.toFloat(), flag)
-            image.setImageBitmap(changeBitmap)
+            GlobalScope.launch(Dispatchers.Main) {
+                changeBitmap = rotate.rotate(originalBitmap, seekBar2.progress.toFloat())
+                image.setImageBitmap(changeBitmap)
+            }
 
             seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -789,16 +790,20 @@ class RedactActivity : AppCompatActivity() {
                 ) {
                     val angle = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    changeBitmap = rotate.rotate(originalBitmap, angle.toFloat(), flag)
-                    image.setImageBitmap(changeBitmap)
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = rotate.rotate(originalBitmap, angle.toFloat())
+                        image.setImageBitmap(changeBitmap)
+                    }
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val angle = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    changeBitmap = rotate.rotate(originalBitmap, angle.toFloat(), flag)
-                    image.setImageBitmap(changeBitmap)
+                    GlobalScope.launch(Dispatchers.Main) {
+                        changeBitmap = rotate.rotate(originalBitmap, angle.toFloat())
+                        image.setImageBitmap(changeBitmap)
+                    }
                 }
             })
         }
