@@ -727,7 +727,10 @@ class RedactActivity : AppCompatActivity() {
             regGone()
             buttonApply.visibility = View.VISIBLE
             val face = Face()
-            changeBitmap = face.apply(originalBitmap, this)
+            loadingOverlay.visibility = View.VISIBLE
+            changeBitmap = face.apply(originalBitmap, this){
+                loadingOverlay.visibility = View.GONE
+            }
             image.setImageBitmap(changeBitmap)
         }
 
@@ -737,7 +740,10 @@ class RedactActivity : AppCompatActivity() {
             regGone()
             buttonApply.visibility = View.VISIBLE
             val person = Person()
-            changeBitmap = person.apply(originalBitmap, this)
+            loadingOverlay.visibility = View.VISIBLE
+            changeBitmap = person.apply(originalBitmap, this){
+                loadingOverlay.visibility = View.GONE
+            }
             image.setImageBitmap(changeBitmap)
         }
 
