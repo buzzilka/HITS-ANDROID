@@ -39,7 +39,7 @@ class Rotate {
                     val oldX = deltaX * cosAngle + deltaY * sinAngle + oldCenterX
                     val oldY = -deltaX * sinAngle + deltaY * cosAngle + oldCenterY
 
-                    if (oldX in 0.0..< (width.toDouble()) && oldY in 0.0..< (height.toDouble())) {
+                    if (oldX in 0.0..<(width.toDouble()) && oldY in 0.0..<(height.toDouble())) {
                         val x0 = oldX.toInt()
                         val y0 = oldY.toInt()
                         val x1 = (x0 + 1).coerceAtMost(width - 1)
@@ -84,7 +84,7 @@ class Rotate {
                     val oldX = deltaX * cosAngle + deltaY * sinAngle + oldCenterX
                     val oldY = -deltaX * sinAngle + deltaY * cosAngle + oldCenterY
 
-                    if (oldX in 0.0..< (width.toDouble()) && oldY in 0.0..< (height.toDouble())) {
+                    if (oldX in 0.0..<(width.toDouble()) && oldY in 0.0..<(height.toDouble())) {
                         val x0 = oldX.toInt()
                         val y0 = oldY.toInt()
                         val x1 = (x0 + 1).coerceAtMost(width - 1)

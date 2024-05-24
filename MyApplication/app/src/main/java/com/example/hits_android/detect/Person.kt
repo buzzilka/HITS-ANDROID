@@ -36,7 +36,7 @@ class Person {
         return resultBitmap
     }
 
-    private fun detectAndDraw (cascadeClassifier: CascadeClassifier, image: Mat, canvas: Canvas) {
+    private fun detectAndDraw(cascadeClassifier: CascadeClassifier, image: Mat, canvas: Canvas) {
         val paint = Paint().apply {
             style = Paint.Style.STROKE
             strokeWidth = 5f
@@ -45,7 +45,7 @@ class Person {
 
         val rectangles = MatOfRect()
 
-        val grayImage:Mat = image.clone()
+        val grayImage: Mat = image.clone()
         cvtColor(grayImage, grayImage, COLOR_BGR2GRAY)
         val clahe = Imgproc.createCLAHE()
         clahe.clipLimit = 2.0
@@ -81,8 +81,9 @@ class Person {
             Log.i("OpenCV", "Nope.")
         }
 
-        fullbodyCascade = CascadeClassifier(File(activity.filesDir, "fullbodyface_cascade.xml").apply {
-            writeBytes(activity.assets.open(fullbodyModel).readBytes())
-        }.path)
+        fullbodyCascade =
+            CascadeClassifier(File(activity.filesDir, "fullbodyface_cascade.xml").apply {
+                writeBytes(activity.assets.open(fullbodyModel).readBytes())
+            }.path)
     }
 }

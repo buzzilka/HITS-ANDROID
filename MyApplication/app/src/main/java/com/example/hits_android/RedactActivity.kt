@@ -633,62 +633,7 @@ class RedactActivity : AppCompatActivity() {
             }
         }
 
-<<<<<<< HEAD
         fun applyRotationFilter() {
-=======
-        buttonCancelRetouch.setOnClickListener {
-            if (changeList.size > 1) changeList.removeAt(changeList.size - 1)
-            changeBitmap = changeList.get(changeList.size - 1)
-            image.setImageBitmap(changeBitmap)
-        }
-
-        val buttonFace: Button = findViewById(R.id.face)
-        buttonFace.setOnClickListener {
-            setOriginalBitmap()
-            regGone()
-            buttonApply.visibility = View.VISIBLE
-            val face = Face()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = face.apply(originalBitmap, this){
-                loadingOverlay.visibility = View.GONE
-            }
-            image.setImageBitmap(changeBitmap)
-        }
-
-        val buttonPerson: Button = findViewById(R.id.person)
-        buttonPerson.setOnClickListener {
-            setOriginalBitmap()
-            regGone()
-            buttonApply.visibility = View.VISIBLE
-            val person = Person()
-            loadingOverlay.visibility = View.VISIBLE
-            changeBitmap = person.apply(originalBitmap, this){
-                loadingOverlay.visibility = View.GONE
-            }
-            image.setImageBitmap(changeBitmap)
-        }
-
-
-        var angleFor90 = 90
-        buttonRotation90.setOnClickListener {
-            val rotate = Rotate()
-            GlobalScope.launch(Dispatchers.Main) {
-                changeBitmap = rotate.rotate(originalBitmap, angleFor90.toFloat())
-                image.setImageBitmap(changeBitmap)
-            }
-            if (angleFor90 == 0) {
-                angleFor90 = 90
-            }
-            angleFor90 += 90
-        }
-
-
-        val buttonRotate: Button = findViewById(R.id.rotate)
-        buttonRotate.setOnClickListener {
-            setOriginalBitmap()
-            f = false
-            regVisibile()
->>>>>>> 8bd8a4d96a145d41e4251e4d0e79f7b78b9e50cc
             buttonRotation90.visibility = View.VISIBLE
 
             seekBar2.max = 360
@@ -897,22 +842,22 @@ class RedactActivity : AppCompatActivity() {
             applyScalingFilter()
         }
     }
+}
 
-    private fun saveImageToGallery(context: Context, bitmap: Bitmap, title: String) {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, "$title.jpg")
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            put(MediaStore.Images.Media.WIDTH, bitmap.width)
-            put(MediaStore.Images.Media.HEIGHT, bitmap.height)
-        }
+fun saveImageToGallery(context: Context, bitmap: Bitmap, title: String) {
+    val contentValues = ContentValues().apply {
+        put(MediaStore.Images.Media.DISPLAY_NAME, "$title.jpg")
+        put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        put(MediaStore.Images.Media.WIDTH, bitmap.width)
+        put(MediaStore.Images.Media.HEIGHT, bitmap.height)
+    }
 
-        val resolver = context.contentResolver
-        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+    val resolver = context.contentResolver
+    val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 
-        uri?.let { imageUri ->
-            resolver.openOutputStream(imageUri)?.use { outputStream ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            }
+    uri?.let { imageUri ->
+        resolver.openOutputStream(imageUri)?.use { outputStream ->
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         }
     }
 }
