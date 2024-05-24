@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">hits-android</string>
+    <string name="app_name">PhotoCat</string>
     <string name="redact">Редактировать</string>
     <string name="spline">Сплайны</string>
     <string name="back">Назад</string>
@@ -9,4 +9,22 @@
     <string name="add">Добавить</string>
     <string name="toMainPAge">Назад</string>
     <string name="save">Сохранить</string>
+    <string name="cancel">отмена</string>
+    <string name="rotate">Поворот</string>
+    <string name="gauss">Гаусс</string>
+    <string name="mosaic">Мозайка</string>
+    <string name="contrast">Контраст</string>
+    <string name="blackWhite">Чёрно-белый</string>
+    <string name="invert">Инверсия</string>
+    <string name="red">Красный</string>
+    <string name="green">Зелёный</string>
+    <string name="blue">Синий</string>
+    <string name="sepia">Сепия</string>
+    <string name="sharp">Маска нерезкости</string>
+    <string name="retouch">Ретушь</string>
+    <string name="face">Лица</string>
+    <string name="person">Люди</string>
+    <string name="scaling">Масштабирование</string>
+    <string name="apply">Применить</string>
+    <string name="exit">выйти</string>
 </resources>
