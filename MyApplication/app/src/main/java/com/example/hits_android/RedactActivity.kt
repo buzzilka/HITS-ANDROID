@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,8 @@ import com.example.hits_android.scaling.Scale
 import com.example.hits_android.unsharpMask.Unsharp
 import androidx.lifecycle.ViewModelProvider
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.ViewCompat
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 
 
@@ -165,7 +168,11 @@ class RedactActivity : AppCompatActivity() {
 
             val gauss = Gauss()
             loadingOverlay.visibility = View.VISIBLE
-            GlobalScope.launch(Dispatchers.Main) {
+            ViewCompat.setElevation(loadingOverlay, 10f)
+            loadingOverlay.bringToFront()
+            loadingOverlay.invalidate()
+            (loadingOverlay.parent as ViewGroup).invalidate()
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = gauss.gaussianBlur(originalBitmap, seekBar2.progress + 1) {
                     loadingOverlay.visibility = View.GONE
                 }
@@ -185,8 +192,12 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val radius = seekBar?.progress ?: 0
                     loadingOverlay.visibility = View.VISIBLE
+                    ViewCompat.setElevation(loadingOverlay, 10f)
+                    loadingOverlay.bringToFront()
+                    loadingOverlay.invalidate()
+                    (loadingOverlay.parent as ViewGroup).invalidate()
                     valSeekBar2.text = (seekBar2.progress + 1).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = gauss.gaussianBlur(originalBitmap, radius + 1) {
                             loadingOverlay.visibility = View.GONE
                         }
@@ -202,7 +213,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress + 5).toString()
 
             val mosaic = Mosaic()
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = mosaic.mosaic(originalBitmap, seekBar2.progress + 5)
                 image.setImageBitmap(changeBitmap)
             }
@@ -215,7 +226,7 @@ class RedactActivity : AppCompatActivity() {
                 ) {
                     val mosaicSize = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress + 5).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = mosaic.mosaic(originalBitmap, mosaicSize + 5)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -225,7 +236,7 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val mosaicSize = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress + 5).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = mosaic.mosaic(originalBitmap, mosaicSize + 5)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -239,7 +250,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress - 100).toString()
 
             val contrast = Contrast()
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = contrast.contrast(originalBitmap, seekBar2.progress - 100)
                 image.setImageBitmap(changeBitmap)
             }
@@ -252,7 +263,7 @@ class RedactActivity : AppCompatActivity() {
                 ) {
                     val contrastVal = seekBar?.progress ?: 100
                     valSeekBar2.text = (seekBar2.progress - 100).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = contrast.contrast(originalBitmap, contrastVal - 100)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -262,7 +273,7 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val contrastVal = seekBar?.progress ?: 100
                     valSeekBar2.text = (seekBar2.progress - 100).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = contrast.contrast(originalBitmap, contrastVal - 100)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -276,7 +287,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress / 100.0).toString()
 
             val blackWhite = BlackWhite()
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = blackWhite.blackAndWhite(originalBitmap, seekBar2.progress / 100.0)
                 image.setImageBitmap(changeBitmap)
             }
@@ -289,7 +300,7 @@ class RedactActivity : AppCompatActivity() {
                 ) {
                     val intensity = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress / 100.0).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = blackWhite.blackAndWhite(originalBitmap, intensity / 100.0)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -299,7 +310,7 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val intensity = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress / 100.0).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = blackWhite.blackAndWhite(originalBitmap, intensity / 100.0)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -313,7 +324,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress).toString()
 
             val inversion = Invercy()
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = inversion.Inversion(originalBitmap, seekBar2.progress)
                 image.setImageBitmap(changeBitmap)
             }
@@ -326,7 +337,7 @@ class RedactActivity : AppCompatActivity() {
                 ) {
                     val threshold = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = inversion.Inversion(originalBitmap, threshold)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -336,7 +347,7 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val threshold = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = inversion.Inversion(originalBitmap, threshold)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -350,7 +361,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress - 255).toString()
 
             val rgb = RGB()
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = rgb.rgbFilter(originalBitmap, seekBar2.progress - 255, color)
                 image.setImageBitmap(changeBitmap)
             }
@@ -363,7 +374,7 @@ class RedactActivity : AppCompatActivity() {
                 ) {
                     val intensity = seekBar?.progress ?: 255
                     valSeekBar2.text = (seekBar2.progress - 255).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, color)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -373,7 +384,7 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val intensity = seekBar?.progress ?: 255
                     valSeekBar2.text = (seekBar2.progress - 255).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = rgb.rgbFilter(originalBitmap, intensity - 255, color)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -387,7 +398,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress).toString()
 
             val sepia = Sepia()
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = sepia.sepiaFilter(originalBitmap, seekBar2.progress)
                 image.setImageBitmap(changeBitmap)
             }
@@ -400,7 +411,7 @@ class RedactActivity : AppCompatActivity() {
                 ) {
                     val sepiaDepth = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = sepia.sepiaFilter(originalBitmap, sepiaDepth)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -410,7 +421,7 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val sepiaDepth = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = sepia.sepiaFilter(originalBitmap, sepiaDepth)
                         image.setImageBitmap(changeBitmap)
                     }
@@ -454,7 +465,11 @@ class RedactActivity : AppCompatActivity() {
 
             val sharp = Unsharp()
             loadingOverlay.visibility = View.VISIBLE
-            GlobalScope.launch(Dispatchers.Main) {
+            ViewCompat.setElevation(loadingOverlay, 10f)
+            loadingOverlay.bringToFront()
+            loadingOverlay.invalidate()
+            (loadingOverlay.parent as ViewGroup).invalidate()
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap =
                     sharp.sharpenImage(originalBitmap, strength / 100.0, threshold, radius + 1) {
                         loadingOverlay.visibility = View.GONE
@@ -476,7 +491,11 @@ class RedactActivity : AppCompatActivity() {
                     strength = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress / 100.0).toString()
                     loadingOverlay.visibility = View.VISIBLE
-                    GlobalScope.launch(Dispatchers.Main) {
+                    ViewCompat.setElevation(loadingOverlay, 10f)
+                    loadingOverlay.bringToFront()
+                    loadingOverlay.invalidate()
+                    (loadingOverlay.parent as ViewGroup).invalidate()
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap =
                             sharp.sharpenImage(
                                 originalBitmap,
@@ -504,7 +523,7 @@ class RedactActivity : AppCompatActivity() {
                     radius = seekBar3?.progress ?: 0
                     valSeekBar3.text = (seekBar3.progress + 1).toString()
                     loadingOverlay.visibility = View.VISIBLE
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap =
                             sharp.sharpenImage(
                                 originalBitmap,
@@ -533,7 +552,7 @@ class RedactActivity : AppCompatActivity() {
                     threshold = seekBar1?.progress ?: 0
                     valSeekBar1.text = (seekBar1.progress).toString()
                     loadingOverlay.visibility = View.VISIBLE
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap =
                             sharp.sharpenImage(
                                 originalBitmap,
@@ -670,7 +689,7 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar2.text = (seekBar2.progress).toString()
 
             val rotate = Rotate()
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = rotate.rotate(originalBitmap, seekBar2.progress.toFloat())
                 image.setImageBitmap(changeBitmap)
             }
@@ -683,7 +702,7 @@ class RedactActivity : AppCompatActivity() {
                 ) {
                     val angle = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = rotate.rotate(originalBitmap, angle.toFloat())
                         image.setImageBitmap(changeBitmap)
                     }
@@ -693,7 +712,7 @@ class RedactActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val angle = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
-                    GlobalScope.launch(Dispatchers.Main) {
+                    lifecycleScope.launch(Dispatchers.Main) {
                         changeBitmap = rotate.rotate(originalBitmap, angle.toFloat())
                         image.setImageBitmap(changeBitmap)
                     }
@@ -709,8 +728,11 @@ class RedactActivity : AppCompatActivity() {
 
             val scale = Scale()
             loadingOverlay.visibility = View.VISIBLE
-
-            GlobalScope.launch(Dispatchers.Main) {
+            ViewCompat.setElevation(loadingOverlay, 10f)
+            loadingOverlay.bringToFront()
+            loadingOverlay.invalidate()
+            (loadingOverlay.parent as ViewGroup).invalidate()
+            lifecycleScope.launch(Dispatchers.Main) {
                 val changeBitmap = withContext(Dispatchers.Default) {
                     scale.scaleImage(originalBitmap, (seekBar2.progress + 1) / 10.0)
                 }
@@ -733,7 +755,11 @@ class RedactActivity : AppCompatActivity() {
                     val scaleFactor = seekBar?.progress ?: 0
                     valSeekBar2.text = ((scaleFactor + 1) / 10.0).toString()
                     loadingOverlay.visibility = View.VISIBLE
-                    GlobalScope.launch(Dispatchers.Main) {
+                    ViewCompat.setElevation(loadingOverlay, 10f)
+                    loadingOverlay.bringToFront()
+                    loadingOverlay.invalidate()
+                    (loadingOverlay.parent as ViewGroup).invalidate()
+                    lifecycleScope.launch(Dispatchers.Main) {
                         val changeBitmap = withContext(Dispatchers.Default) {
                             scale.scaleImage(originalBitmap, (scaleFactor + 1) / 10.0)
                         }
@@ -852,7 +878,7 @@ class RedactActivity : AppCompatActivity() {
         buttonRotation90.setOnClickListener {
             val rotate = Rotate()
             angleFor90 += 90
-            GlobalScope.launch(Dispatchers.Main) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = rotate.rotate(originalBitmap, angleFor90.toFloat())
                 image.setImageBitmap(changeBitmap)
             }

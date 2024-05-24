@@ -25,7 +25,7 @@ class Rotate {
         val originalPixels = IntArray(width * height)
         image.getPixels(originalPixels, 0, width, 0, 0, width, height)
 
-        val rotatedPixels = IntArray(newWidth * newHeight) { Color.WHITE }
+        val rotatedPixels = IntArray(newWidth * newHeight) { Color.parseColor("#E8E8F9") }
 
         val chunkSize = newHeight / 2
         val deferredResults = mutableListOf<Deferred<Unit>>()
