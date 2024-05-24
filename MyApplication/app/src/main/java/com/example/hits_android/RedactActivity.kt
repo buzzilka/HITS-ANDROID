@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.MotionEvent
@@ -23,6 +24,7 @@ import com.example.hits_android.filters.*
 import com.example.hits_android.retouching.Retouch
 import com.example.hits_android.detect.*
 import com.example.hits_android.rotate.Rotate
+import com.example.hits_android.scaling.Scale
 import com.example.hits_android.unsharpMask.Unsharp
 import androidx.lifecycle.ViewModelProvider
 import androidx.core.graphics.drawable.toBitmap
@@ -35,6 +37,7 @@ class RedactActivity : AppCompatActivity() {
     private lateinit var changeBitmap: Bitmap
     private var bitmapList = ArrayList<Bitmap>()
     private var check: Boolean = true
+    private var f: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -765,6 +768,7 @@ class RedactActivity : AppCompatActivity() {
         val buttonRotate: Button = findViewById(R.id.rotate)
         buttonRotate.setOnClickListener {
             setOriginalBitmap()
+            f = false
             regVisibile()
             buttonRotation90.visibility = View.VISIBLE
 
@@ -778,7 +782,7 @@ class RedactActivity : AppCompatActivity() {
 
             val rotate = Rotate()
             GlobalScope.launch(Dispatchers.Main) {
-                changeBitmap = rotate.rotate(originalBitmap, seekBar2.progress.toFloat())
+                if (!f) changeBitmap = rotate.rotate(originalBitmap, seekBar2.progress.toFloat())
                 image.setImageBitmap(changeBitmap)
             }
 
@@ -791,7 +795,7 @@ class RedactActivity : AppCompatActivity() {
                     val angle = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
                     GlobalScope.launch(Dispatchers.Main) {
-                        changeBitmap = rotate.rotate(originalBitmap, angle.toFloat())
+                        if (!f) changeBitmap = rotate.rotate(originalBitmap, angle.toFloat())
                         image.setImageBitmap(changeBitmap)
                     }
                 }
@@ -801,7 +805,53 @@ class RedactActivity : AppCompatActivity() {
                     val angle = seekBar?.progress ?: 0
                     valSeekBar2.text = (seekBar2.progress).toString()
                     GlobalScope.launch(Dispatchers.Main) {
-                        changeBitmap = rotate.rotate(originalBitmap, angle.toFloat())
+                        if (!f) changeBitmap = rotate.rotate(originalBitmap, angle.toFloat())
+                        image.setImageBitmap(changeBitmap)
+                    }
+                }
+            })
+        }
+
+        val buttonScale: Button = findViewById(R.id.scale)
+        buttonScale.setOnClickListener {
+            setOriginalBitmap()
+            regVisibile()
+            seekBar2.max = 19
+            seekBar2.progress = 9
+
+            valSeekBar2.text = ((seekBar2.progress + 1) / 10.0).toString()
+
+            val scale = Scale()
+            loadingOverlay.visibility = View.VISIBLE
+
+            GlobalScope.launch(Dispatchers.Main) {
+                val changeBitmap = withContext(Dispatchers.Default) {
+                    scale.scaleImage(originalBitmap, (seekBar2.progress + 1) / 10.0)
+                }
+                loadingOverlay.visibility = View.GONE
+                image.setImageBitmap(changeBitmap)
+            }
+
+            seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    val scaleFactor = seekBar?.progress ?: 0
+                    valSeekBar2.text =  ((scaleFactor + 1) / 10.0).toString()
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    val scaleFactor = seekBar?.progress ?: 0
+                    valSeekBar2.text =  ((scaleFactor + 1) / 10.0).toString()
+                    loadingOverlay.visibility = View.VISIBLE
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val changeBitmap = withContext(Dispatchers.Default) {
+                            scale.scaleImage(originalBitmap, (scaleFactor  + 1) / 10.0)
+                        }
+                        loadingOverlay.visibility = View.GONE
                         image.setImageBitmap(changeBitmap)
                     }
                 }
@@ -842,10 +892,14 @@ class RedactActivity : AppCompatActivity() {
     }
 
     private fun setOriginalBitmap() {
+        f = true
         if (check) {
             originalBitmap = image.drawable.toBitmap()
             bitmapList.add(originalBitmap)
             check = false
+        }
+        else{
+            image.setImageBitmap(originalBitmap)
         }
     }
 }
