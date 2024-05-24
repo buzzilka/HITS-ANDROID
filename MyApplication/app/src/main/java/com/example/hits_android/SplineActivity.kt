@@ -16,6 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlin.math.*
+import android.graphics.Bitmap
+import android.os.Environment
+import android.provider.MediaStore
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 class SplineActivity : AppCompatActivity() {
 
@@ -33,7 +39,7 @@ class SplineActivity : AppCompatActivity() {
             insets
         }
 
-        val homePage: Button = findViewById(R.id.nazad)
+        val homePage: Button = findViewById(R.id.toMainPage)
         homePage.setOnClickListener {
             val intent = Intent(this@SplineActivity, MainActivity::class.java)
             startActivity(intent)
@@ -67,6 +73,11 @@ class SplineActivity : AppCompatActivity() {
             myCustomView.setDeleteButton(false)
             myCustomView.setReplaceButton(false)
         }
+
+        val save: Button = findViewById(R.id.saveToGallery)
+        save.setOnClickListener {
+            myCustomView.saveSplineToGallery()
+        }
     }
 }
 
@@ -87,6 +98,8 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
     private var splineButtonClicked = false
     private var splines = mutableListOf<PointF>()
     private var segments = mutableListOf<MutableList<PointF>>()
+    private var segmentCurvatures = mutableListOf<Float>()
+    private var segmentIndex = -1
 
     fun setReplaceButton(clicked: Boolean) {
         replaceButtonClicked = clicked
@@ -104,6 +117,7 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
         splineButtonClicked = clicked
         flagForSpline = true
         convertingToSpline()
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -132,11 +146,27 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
             if (points.size > 2) {
                 for (i in 0 until splines.size - 1) {
                     canvas.drawLine(
+<<<<<<< HEAD
                         splines[i].x, splines[i].y, splines[i + 1].x, splines[i + 1].y, paint
                     )
                 }
                 canvas.drawLine(
                     splines.last().x, splines.last().y, splines.first().x, splines.first().y, paint
+=======
+                        splines[i].x,
+                        splines[i].y,
+                        splines[i + 1].x,
+                        splines[i + 1].y,
+                        paint
+                    )
+                }
+                canvas.drawLine(
+                    splines.last().x,
+                    splines.last().y,
+                    splines.first().x,
+                    splines.first().y,
+                    paint
+>>>>>>> 8bd8a4d96a145d41e4251e4d0e79f7b78b9e50cc
                 )
             } else if (points.size == 2) {
                 canvas.drawLine(
@@ -155,6 +185,7 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 if (addButtonClicked) {
+<<<<<<< HEAD
                     if (flag && points.size > 0 && isNearFirstPoint(currentPoint)) {
                         flag = false
                     }
@@ -188,18 +219,18 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
                         }
                         convertingToSpline()
                     }
+=======
+                    handleAddPoint(currentPoint)
+>>>>>>> 8bd8a4d96a145d41e4251e4d0e79f7b78b9e50cc
                 }
                 if (replaceButtonClicked) {
                     index = getNearPointIndex(currentPoint)
                 }
                 if (deleteButtonClicked) {
-                    index = getNearPointIndex(currentPoint)
-                    if (index != -1) {
-                        points.removeAt(index)
-                    }
-                    if (flagForSpline) {
-                        convertingToSpline()
-                    }
+                    handleDeletePoint(currentPoint)
+                }
+                if (splineButtonClicked) {
+                    segmentIndex = getNearSegmentIndex(currentPoint)
                 }
                 invalidate()
                 return true
@@ -207,31 +238,72 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
 
             MotionEvent.ACTION_MOVE -> {
                 if (index != -1 && replaceButtonClicked) {
-                    val newPoint = PointF(event.x, event.y)
-                    points[index] = newPoint
-                    invalidate()
-                    if (flagForSpline) {
-                        convertingToSpline()
-                    }
+                    handleReplacePoint(currentPoint)
+                }
+                if (segmentIndex != -1 && splineButtonClicked) {
+                    handleAdjustCurvature(currentPoint)
                 }
                 return true
             }
 
             MotionEvent.ACTION_UP -> {
                 if (index != -1 && replaceButtonClicked) {
-                    val newPoint = PointF(event.x, event.y)
-                    points[index] = newPoint
-                    if (flagForSpline) {
-                        convertingToSpline()
-                    }
-                    invalidate()
+                    handleReplacePoint(currentPoint)
                     index = -1
+                }
+                if (splineButtonClicked) {
+                    segmentIndex = -1
                 }
                 return true
             }
         }
         return super.onTouchEvent(event)
     }
+
+    private fun handleAddPoint(currentPoint: PointF) {
+        if (flag && points.size > 0 && isNearFirstPoint(currentPoint)) {
+            flag = false
+        } else if (flag) {
+            points.add(currentPoint)
+            segmentCurvatures.add(0.5f)
+        } else if (!flag && !isNearFirstPoint(currentPoint)) {
+            val newIndex = findIndex(currentPoint)
+            points.add(newIndex + 1, currentPoint)
+            segmentCurvatures.add(newIndex + 1, 0.5f)
+        }
+        convertingToSpline()
+    }
+
+    private fun handleDeletePoint(currentPoint: PointF) {
+        index = getNearPointIndex(currentPoint)
+        if (index != -1) {
+            points.removeAt(index)
+            segmentCurvatures.removeAt(index)
+        }
+        if (flagForSpline) {
+            convertingToSpline()
+        }
+    }
+
+    private fun handleReplacePoint(newPoint: PointF) {
+        points[index] = newPoint
+        if (flagForSpline) {
+            convertingToSpline()
+        }
+        invalidate()
+    }
+
+    private fun handleAdjustCurvature(point: PointF) {
+        val segment = segments[segmentIndex]
+        val midPoint = PointF((segment[0].x + segment[1].x) / 2, (segment[0].y + segment[1].y) / 2)
+        val curvatureX = (point.x - midPoint.x) / width.toFloat() * 5.0f
+        val curvatureY = (point.y - midPoint.y) / height.toFloat() * 5.0f
+        segmentCurvatures[segmentIndex] =
+            sqrt(curvatureX.pow(2) + curvatureY.pow(2)).coerceIn(0.1f, 1.2f)
+        convertingToSpline()
+        invalidate()
+    }
+
 
     private fun isNearFirstPoint(point: PointF): Boolean {
         return (points[0].x <= point.x + 50 && points[0].x >= point.x - 50) && (points[0].y <= point.y + 50 && points[0].y >= point.y - 50)
@@ -246,8 +318,52 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
         return -1
     }
 
+    private fun getNearSegmentIndex(point: PointF): Int {
+        var minDistance = Float.MAX_VALUE
+        var index = -1
+        for (i in 0 until segments.size) {
+            val middlePoint = PointF(
+                (segments[i][0].x + segments[i][1].x) / 2,
+                (segments[i][0].y + segments[i][1].y) / 2
+            )
+            val distance = calculateDistance(point, middlePoint)
+            if (distance < minDistance) {
+                minDistance = distance
+                index = i
+            }
+        }
+        return index
+    }
+
+
     private fun calculateDistance(newPoint: PointF, currentPoint: PointF): Float {
-        return sqrt((newPoint.x - currentPoint.x) * (newPoint.x - currentPoint.x) + (newPoint.y - currentPoint.y) * (newPoint.y - currentPoint.y))
+        return sqrt((newPoint.x - currentPoint.x).pow(2) + (newPoint.y - currentPoint.y).pow(2))
+    }
+
+    private fun findIndex(currentPoint: PointF): Int {
+        var firstMinimumDistance = Float.MAX_VALUE
+        var firstIndex = 0
+        var secondMinimumDistance = Float.MAX_VALUE
+        var secondIndex = 0
+        for (i in 0 until points.size) {
+            val firstCurrentDistance = calculateDistance(currentPoint, points[i])
+            if (firstCurrentDistance < firstMinimumDistance) {
+                firstMinimumDistance = firstCurrentDistance
+                firstIndex = i
+            }
+        }
+        for (j in 0 until points.size) {
+            val secondCurrentDistance = calculateDistance(currentPoint, points[j])
+            if (secondCurrentDistance < secondMinimumDistance && firstIndex != j) {
+                secondMinimumDistance = secondCurrentDistance
+                secondIndex = j
+            }
+        }
+        if ((firstIndex == 0 || firstIndex == points.size - 1) && (secondIndex == 0 || secondIndex == points.size - 1)) {
+            return points.size - 1
+        } else {
+            return min(firstIndex, secondIndex)
+        }
     }
 
     private fun constructionSegments() {
@@ -291,18 +407,63 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
                 }
 
                 while (t <= 1.0) {
+                    val curvature = segmentCurvatures[i] * 2.0
                     xS = (2.0 * t.pow(3.0) - 3.0 * t.pow(2.0) + 1) * segments[i][0].x +
-                            (t.pow(3.0) - 2.0 * t.pow(2.0) + t) * m0X +
+                            curvature * (t.pow(3.0) - 2.0 * t.pow(2.0) + t) * m0X +
                             (3.0 * t.pow(2.0) - 2.0 * t.pow(3.0)) * segments[i][1].x +
-                            (t.pow(3.0) - t.pow(2.0)) * m1X
+                            curvature * (t.pow(3.0) - t.pow(2.0)) * m1X
                     yS = (2.0 * t.pow(3.0) - 3.0 * t.pow(2.0) + 1) * segments[i][0].y +
-                            (t.pow(3.0) - 2.0 * t.pow(2.0) + t) * m0Y +
+                            curvature * (t.pow(3.0) - 2.0 * t.pow(2.0) + t) * m0Y +
                             (3.0 * t.pow(2.0) - 2.0 * t.pow(3.0)) * segments[i][1].y +
-                            (t.pow(3.0) - t.pow(2.0)) * m1Y
+                            curvature * (t.pow(3.0) - t.pow(2.0)) * m1Y
                     splines.add(PointF(xS.toFloat(), yS.toFloat()))
                     t += 0.01
                 }
             }
         }
+    }
+
+    fun saveSplineToGallery() {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        draw(canvas)
+
+        val filename = "spline_${System.currentTimeMillis()}.png"
+
+        if (saveBitmapToFile(bitmap, filename)) {
+            addImageToGallery(context, filename)
+        }
+    }
+
+    private fun saveBitmapToFile(bitmap: Bitmap, filename: String): Boolean {
+        var outputStream: OutputStream? = null
+        try {
+            val file = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                filename
+            )
+            outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.flush()
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        } finally {
+            outputStream?.close()
+        }
+    }
+
+    private fun addImageToGallery(context: Context, filename: String) {
+        val file = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+            filename
+        )
+        MediaStore.Images.Media.insertImage(
+            context.contentResolver,
+            file.absolutePath,
+            file.name,
+            file.name
+        )
     }
 }
