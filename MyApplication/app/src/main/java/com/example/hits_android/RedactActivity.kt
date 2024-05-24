@@ -1,5 +1,6 @@
 package com.example.hits_android
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -549,6 +550,7 @@ class RedactActivity : AppCompatActivity() {
             })
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         fun applyRetouch() {
             changeList.add(originalBitmap)
 
