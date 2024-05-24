@@ -150,13 +150,11 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
             if (points.size > 2) {
                 for (i in 0 until splines.size - 1) {
                     canvas.drawLine(
-<<<<<<< HEAD
                         splines[i].x, splines[i].y, splines[i + 1].x, splines[i + 1].y, paint
                     )
                 }
                 canvas.drawLine(
                     splines.last().x, splines.last().y, splines.first().x, splines.first().y, paint
-=======
                         splines[i].x,
                         splines[i].y,
                         splines[i + 1].x,
@@ -170,7 +168,6 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
                     splines.first().x,
                     splines.first().y,
                     paint
->>>>>>> 8bd8a4d96a145d41e4251e4d0e79f7b78b9e50cc
                 )
             } else if (points.size == 2) {
                 canvas.drawLine(
@@ -223,9 +220,7 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
                         }
                         convertingToSpline()
                     }
-=======
                     handleAddPoint(currentPoint)
->>>>>>> 8bd8a4d96a145d41e4251e4d0e79f7b78b9e50cc
                 }
                 if (replaceButtonClicked) {
                     index = getNearPointIndex(currentPoint)

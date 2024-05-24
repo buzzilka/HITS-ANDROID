@@ -42,7 +42,8 @@ class Mosaic {
                         val currentCol = cols * px + mosaicCols
 
                         if (currentRow < image.height && currentCol < image.width) {
-                            mosaicPixels[currentRow * image.width + currentCol] = Color.rgb(avgRed, avgGreen, avgBlue)
+                            mosaicPixels[currentRow * image.width + currentCol] =
+                                Color.rgb(avgRed, avgGreen, avgBlue)
                         }
                     }
                 }
