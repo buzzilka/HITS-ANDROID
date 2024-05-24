@@ -24,7 +24,7 @@ class Face {
     private lateinit var frontalfaceCascade: CascadeClassifier
     private val frontalfaceModel = "haarcascade_frontalface_alt2.xml"
 
-    fun apply(originalBitmap: Bitmap, activity: Activity, progressCallback: () -> Unit): Bitmap {
+    fun apply(originalBitmap: Bitmap, activity: Activity): Bitmap {
         loadModels(activity)
         val originalMap = Mat()
         Utils.bitmapToMat(originalBitmap, originalMap)
@@ -35,7 +35,6 @@ class Face {
 
         detectAndDraw(frontalfaceCascade, originalMap, canvas)
 
-        progressCallback()
         return resultBitmap
     }
 

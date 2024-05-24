@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -36,17 +37,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private val cameraPermissionRequestLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 startDefaultCamera()
             } else {
-                Toast.makeText(
-                    this,
-                    "Go to settings and enable camera permission to use this feature",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
+                alertDialogBuilder.apply {
+                    setTitle("Error")
+                    setMessage("Go to settings and enable camera permission to use this feature.")
+                    setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                }
+                val alertDialog = alertDialogBuilder.create()
+                alertDialog.show()
             }
         }
 
@@ -96,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
         val galleryButton: ImageButton = findViewById(R.id.gallery)
         galleryButton.setOnClickListener {
-           pickFilesFromGallery()
+            pickFilesFromGallery()
         }
 
         val cameraButton: ImageButton = findViewById(R.id.camera)
@@ -104,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             handleCameraPermission()
         }
 
-        val splineButton : Button = findViewById(R.id.button)
+        val splineButton: Button = findViewById(R.id.button)
         splineButton.setOnClickListener {
             val intent = Intent(this@MainActivity, SplineActivity::class.java)
             startActivity(intent)
@@ -118,14 +123,24 @@ class MainActivity : AppCompatActivity() {
                 }
                 startActivity(intent)
             } ?: run {
-                Toast.makeText(this@MainActivity, "Image URI is null", Toast.LENGTH_SHORT).show()
+                val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
+                alertDialogBuilder.apply {
+                    setTitle("Error")
+                    setMessage("Image URI is null. Please select an image.")
+                    setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                }
+                val alertDialog = alertDialogBuilder.create()
+                alertDialog.show()
             }
         }
     }
 
 
     private fun createImageFile(): File? {
-        val timeStamp: String = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(Date())
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG${timeStamp}_",
@@ -149,7 +164,16 @@ class MainActivity : AppCompatActivity() {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     takePictureLauncher.launch(takePictureIntent)
                 } ?: run {
-                    Toast.makeText(this, "No camera app available", Toast.LENGTH_SHORT).show()
+                    val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
+                    alertDialogBuilder.apply {
+                        setTitle("Error")
+                        setMessage("No camera app available.")
+                        setPositiveButton("OK") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                    }
+                    val alertDialog = alertDialogBuilder.create()
+                    alertDialog.show()
                 }
             }
         }

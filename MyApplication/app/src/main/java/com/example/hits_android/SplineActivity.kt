@@ -116,24 +116,36 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
             for (i in 0 until points.size - 1) {
                 canvas.drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, paint)
                 if (!flag) {
-                    canvas.drawLine(points.last().x, points.last().y, points.first().x, points.first().y, paint)
+                    canvas.drawLine(
+                        points.last().x,
+                        points.last().y,
+                        points.first().x,
+                        points.first().y,
+                        paint
+                    )
                 }
             }
-        }
-        else {
+        } else {
             for (point in points) {
                 canvas.drawCircle(point.x, point.y, 20f, paint)
             }
             if (points.size > 2) {
                 for (i in 0 until splines.size - 1) {
-                    canvas.drawLine(splines[i].x, splines[i].y, splines[i + 1].x, splines[i + 1].y, paint
+                    canvas.drawLine(
+                        splines[i].x, splines[i].y, splines[i + 1].x, splines[i + 1].y, paint
                     )
                 }
-                canvas.drawLine(splines.last().x, splines.last().y, splines.first().x, splines.first().y, paint
+                canvas.drawLine(
+                    splines.last().x, splines.last().y, splines.first().x, splines.first().y, paint
                 )
-            }
-            else if (points.size == 2){
-                canvas.drawLine(points.first().x, points.first().y, points.last().x, points.last().y, paint)
+            } else if (points.size == 2) {
+                canvas.drawLine(
+                    points.first().x,
+                    points.first().y,
+                    points.last().x,
+                    points.last().y,
+                    paint
+                )
             }
         }
     }
@@ -171,8 +183,7 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
                         val newIndex = min(firstIndex, secondIndex)
                         if (newIndex == 0 && max(firstIndex, secondIndex) != 1) {
                             points.add(currentPoint)
-                        }
-                        else {
+                        } else {
                             points.add(newIndex + 1, currentPoint)
                         }
                         convertingToSpline()
@@ -193,6 +204,7 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
                 invalidate()
                 return true
             }
+
             MotionEvent.ACTION_MOVE -> {
                 if (index != -1 && replaceButtonClicked) {
                     val newPoint = PointF(event.x, event.y)
@@ -204,6 +216,7 @@ class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs
                 }
                 return true
             }
+
             MotionEvent.ACTION_UP -> {
                 if (index != -1 && replaceButtonClicked) {
                     val newPoint = PointF(event.x, event.y)

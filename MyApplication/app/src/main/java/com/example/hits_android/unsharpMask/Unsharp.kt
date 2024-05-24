@@ -7,16 +7,22 @@ import kotlinx.coroutines.*
 import kotlin.math.abs
 
 class Unsharp {
-    suspend fun sharpenImage(image: Bitmap, strength: Double, threshold: Int, radius: Int, progressCallback: () -> Unit): Bitmap = coroutineScope {
+    suspend fun sharpenImage(
+        image: Bitmap,
+        strength: Double,
+        threshold: Int,
+        radius: Int,
+        progressCallback: () -> Unit
+    ): Bitmap = coroutineScope {
         val gauss = Gauss()
         val blurredBitmap = withContext(Dispatchers.Default) {
-            gauss.gaussianBlur(image, radius){}
+            gauss.gaussianBlur(image, radius) {}
         }
         val resultBitmap = Bitmap.createBitmap(image.width, image.height, image.config)
 
         val kernel = doubleArrayOf(
             -1.0, -1.0, -1.0,
-            -1.0,  9.0, -1.0,
+            -1.0, 9.0, -1.0,
             -1.0, -1.0, -1.0
         )
 
@@ -47,9 +53,12 @@ class Unsharp {
                     }
 
                     val originalPixel = pixels[y * image.width + x]
-                    val newPixelR = (Color.red(originalPixel) + strength * (sumR - Color.red(originalPixel))).toInt()
-                    val newPixelG = (Color.green(originalPixel) + strength * (sumG - Color.green(originalPixel))).toInt()
-                    val newPixelB = (Color.blue(originalPixel) + strength * (sumB - Color.blue(originalPixel))).toInt()
+                    val newPixelR =
+                        (Color.red(originalPixel) + strength * (sumR - Color.red(originalPixel))).toInt()
+                    val newPixelG =
+                        (Color.green(originalPixel) + strength * (sumG - Color.green(originalPixel))).toInt()
+                    val newPixelB =
+                        (Color.blue(originalPixel) + strength * (sumB - Color.blue(originalPixel))).toInt()
 
                     val diffR = abs(newPixelR - Color.red(originalPixel))
                     val diffG = abs(newPixelG - Color.green(originalPixel))
