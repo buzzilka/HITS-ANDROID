@@ -20,8 +20,13 @@ class BlackWhite {
         val deferredJob1 = async(Dispatchers.Default) {
             for (i in 0 until chunkSize) {
                 val pixel = pixels[i]
-                val gray = (Color.red(pixel) * 0.3 + Color.green(pixel) * 0.59 + Color.blue(pixel) * 0.11) * intensity
-                pixels[i] = Color.rgb(gray.toInt().coerceIn(0, 255), gray.toInt().coerceIn(0, 255), gray.toInt().coerceIn(0, 255))
+                val gray =
+                    (Color.red(pixel) * 0.3 + Color.green(pixel) * 0.59 + Color.blue(pixel) * 0.11) * intensity
+                pixels[i] = Color.rgb(
+                    gray.toInt().coerceIn(0, 255),
+                    gray.toInt().coerceIn(0, 255),
+                    gray.toInt().coerceIn(0, 255)
+                )
             }
         }
         deferredResults.add(deferredJob1)
@@ -29,8 +34,13 @@ class BlackWhite {
         val deferredJob2 = async(Dispatchers.Default) {
             for (i in chunkSize until pixels.size) {
                 val pixel = pixels[i]
-                val gray = (Color.red(pixel) * 0.3 + Color.green(pixel) * 0.59 + Color.blue(pixel) * 0.11) * intensity
-                pixels[i] = Color.rgb(gray.toInt().coerceIn(0, 255), gray.toInt().coerceIn(0, 255), gray.toInt().coerceIn(0, 255))
+                val gray =
+                    (Color.red(pixel) * 0.3 + Color.green(pixel) * 0.59 + Color.blue(pixel) * 0.11) * intensity
+                pixels[i] = Color.rgb(
+                    gray.toInt().coerceIn(0, 255),
+                    gray.toInt().coerceIn(0, 255),
+                    gray.toInt().coerceIn(0, 255)
+                )
             }
         }
         deferredResults.add(deferredJob2)

@@ -6,11 +6,23 @@ import android.graphics.Color
 import android.graphics.Paint
 
 class Retouch {
-    fun applyRetouching(x: Float, y: Float, retouchedBitmap: Bitmap, intencity: Int, brushSize: Int) : Bitmap {
+    fun applyRetouching(
+        x: Float,
+        y: Float,
+        retouchedBitmap: Bitmap,
+        intencity: Int,
+        brushSize: Int
+    ): Bitmap {
         return retouch(retouchedBitmap, brushSize, intencity / 100.0, x, y)
     }
 
-    private fun retouch(originalBitmap: Bitmap, brushSize: Int, retouchingFactor: Double, x: Float, y: Float): Bitmap {
+    private fun retouch(
+        originalBitmap: Bitmap,
+        brushSize: Int,
+        retouchingFactor: Double,
+        x: Float,
+        y: Float
+    ): Bitmap {
         val paint = Paint().apply {
             color = Color.TRANSPARENT
             strokeWidth = 40f
@@ -39,7 +51,8 @@ class Retouch {
 
         for (i in startX..endX) {
             for (j in startY..endY) {
-                val distance = Math.sqrt(((i - x) * (i - x) + (j - y) * (j - y)).toDouble()).toFloat()
+                val distance =
+                    Math.sqrt(((i - x) * (i - x) + (j - y) * (j - y)).toDouble()).toFloat()
                 if (distance <= radius) {
                     val pix = originalBitmap.getPixel(i, j)
                     redSum += Color.red(pix)
@@ -52,29 +65,32 @@ class Retouch {
         }
         for (i in startX..endX) {
             for (j in startY..endY) {
-                val distance = Math.sqrt(((i - x) * (i - x) + (j - y) * (j - y)).toDouble()).toFloat()
+                val distance =
+                    Math.sqrt(((i - x) * (i - x) + (j - y) * (j - y)).toDouble()).toFloat()
                 if (distance <= radius) {
                     val coeff = (1 - distance / radius) * retouchingFactor
 
                     val pix = originalBitmap.getPixel(i, j)
 
-                    retouchedBitmap.setPixel(i, j, Color.argb(
-                        averColor(Color.alpha(pix), alphaSum / count, coeff),
-                        averColor(Color.red(pix), redSum / count, coeff),
-                        averColor(Color.green(pix), greenSum / count, coeff),
-                        averColor(Color.blue(pix), blueSum / count, coeff)
-                    )
+                    retouchedBitmap.setPixel(
+                        i, j, Color.argb(
+                            changeColor(Color.alpha(pix), alphaSum / count, coeff),
+                            changeColor(Color.red(pix), redSum / count, coeff),
+                            changeColor(Color.green(pix), greenSum / count, coeff),
+                            changeColor(Color.blue(pix), blueSum / count, coeff)
+                        )
                     )
                 }
             }
         }
         return retouchedBitmap
     }
-    private fun averColor(color: Int, colorSr: Double, coeff: Double): Int {
+
+    private fun changeColor(color: Int, colorSr: Double, coeff: Double): Int {
         var ansColor = color
 
-        if (colorSr > ansColor) ansColor += ((colorSr - ansColor) * coeff).toInt()
-        else if (colorSr < ansColor) ansColor -= ((ansColor - colorSr) * coeff).toInt()
+        if (colorSr > ansColor) ansColor += (coeff * (colorSr - ansColor)).toInt()
+        else if (colorSr < ansColor) ansColor -= (coeff * (ansColor - colorSr)).toInt()
 
         return ansColor
     }

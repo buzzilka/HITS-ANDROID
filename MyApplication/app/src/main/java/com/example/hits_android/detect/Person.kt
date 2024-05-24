@@ -22,7 +22,7 @@ class Person {
     private lateinit var fullbodyCascade: CascadeClassifier
     private val fullbodyModel = "haarcascade_fullbody.xml"
 
-    fun apply(originalBitmap: Bitmap, activity: Activity, progressCallback: () -> Unit): Bitmap {
+    fun apply(originalBitmap: Bitmap, activity: Activity): Bitmap {
         loadModels(activity)
         val originalMap = Mat()
         Utils.bitmapToMat(originalBitmap, originalMap)
@@ -33,7 +33,6 @@ class Person {
 
         detectAndDraw(fullbodyCascade, originalMap, canvas)
 
-        progressCallback()
         return resultBitmap
     }
 
