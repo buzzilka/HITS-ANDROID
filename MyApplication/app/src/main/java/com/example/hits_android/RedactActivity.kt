@@ -94,7 +94,7 @@ class RedactActivity : AppCompatActivity() {
         fun regVisible() {
             seekBar2.visibility = View.VISIBLE
             textSeekBar2.visibility = View.VISIBLE
-            textSeekBar2.text = "Интенсивность"
+            textSeekBar2.text = "Интенс."
             valSeekBar2.visibility = View.VISIBLE
             buttonApply.visibility = View.VISIBLE
             seekBar1.visibility = View.GONE
@@ -435,7 +435,7 @@ class RedactActivity : AppCompatActivity() {
             buttonRotation90.visibility = View.GONE
 
             textSeekBar1.text = "Порог"
-            textSeekBar2.text = "Интенсивность"
+            textSeekBar2.text = "Интенс."
             textSeekBar3.text = "Радиус"
 
             seekBar3.max = 99
@@ -573,8 +573,8 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar1.text = (seekBar1.progress).toString()
             valSeekBar3.text = (seekBar3.progress + 5).toString()
 
-            textSeekBar1.text = "Интенсивность"
-            textSeekBar3.text = "Размер кисти"
+            textSeekBar1.text = "Интенс."
+            textSeekBar3.text = "Раз. кисти"
 
             var brushSize: Int = seekBar1.progress
             var intensity: Int = seekBar3.progress
