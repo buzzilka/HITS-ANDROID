@@ -2,4 +2,9 @@
     <string name="app_name">hits-android</string>
     <string name="redact">Редактировать</string>
     <string name="spline">Сплайны</string>
+    <string name="back">Назад</string>
+    <string name="replace">Переместить</string>
+    <string name="splineButton">Сплайн</string>
+    <string name="delete">Удалить</string>
+    <string name="add">Добавить</string>
 </resources>

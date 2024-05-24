@@ -74,7 +74,6 @@
         android:src = "@drawable/deafault"
         android:textStyle="bold"
         android:scaleType="centerInside"
-        android:padding="0dp"
         app:layout_constraintBottom_toTopOf="@+id/camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"

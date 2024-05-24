@@ -13,12 +13,12 @@ import android.util.AttributeSet
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kotlin.math.*
 
 class SplineActivity : AppCompatActivity() {
-
     private lateinit var myCustomView: MyCustomView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,8 +71,10 @@ class SplineActivity : AppCompatActivity() {
 }
 
 class MyCustomView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
+    private val purpleColor = ContextCompat.getColor(context, R.color.purple)
+
     private val paint = Paint().apply {
-        color = Color.WHITE
+        color = purpleColor
         style = Paint.Style.FILL
         strokeWidth = 10f
     }
