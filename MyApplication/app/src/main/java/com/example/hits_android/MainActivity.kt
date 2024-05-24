@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                 val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
                 alertDialogBuilder.apply {
                     setTitle("Ошибка")
-                    setMessage("Нет изображения. Пожалуйста, выберете изображение.")
+                    setMessage("Нет изображения. Пожалуйста, выберите изображение.")
                     setPositiveButton("OK") { dialog, _ ->
                         dialog.dismiss()
                     }
