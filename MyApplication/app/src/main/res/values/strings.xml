@@ -7,4 +7,6 @@
     <string name="splineButton">Сплайн</string>
     <string name="delete">Удалить</string>
     <string name="add">Добавить</string>
+    <string name="toMainPAge">Назад</string>
+    <string name="save">Сохранить</string>
 </resources>
