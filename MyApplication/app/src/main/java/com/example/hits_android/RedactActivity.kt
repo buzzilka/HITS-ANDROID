@@ -94,7 +94,7 @@ class RedactActivity : AppCompatActivity() {
         fun regVisible() {
             seekBar2.visibility = View.VISIBLE
             textSeekBar2.visibility = View.VISIBLE
-            textSeekBar2.text = "Intensity"
+            textSeekBar2.text = "Интенсивность"
             valSeekBar2.visibility = View.VISIBLE
             buttonApply.visibility = View.VISIBLE
             seekBar1.visibility = View.GONE
@@ -434,8 +434,9 @@ class RedactActivity : AppCompatActivity() {
             buttonCancelRetouch.visibility = View.GONE
             buttonRotation90.visibility = View.GONE
 
-            textSeekBar1.text = "Threshold"
-            textSeekBar3.text = "Radius"
+            textSeekBar1.text = "Порог"
+            textSeekBar2.text = "Интенсивность"
+            textSeekBar3.text = "Радиус"
 
             seekBar3.max = 99
             seekBar3.progress = 4
@@ -572,8 +573,8 @@ class RedactActivity : AppCompatActivity() {
             valSeekBar1.text = (seekBar1.progress).toString()
             valSeekBar3.text = (seekBar3.progress + 5).toString()
 
-            textSeekBar1.text = "Intensity"
-            textSeekBar3.text = "Brush Size"
+            textSeekBar1.text = "Интенсивность"
+            textSeekBar3.text = "Размер кисти"
 
             var brushSize: Int = seekBar1.progress
             var intensity: Int = seekBar3.progress
@@ -663,7 +664,7 @@ class RedactActivity : AppCompatActivity() {
             seekBar2.max = 360
             seekBar2.progress = 0
             val textSeekBar2: TextView = findViewById(R.id.textViewSeekBar2)
-            textSeekBar2.text = "Angle"
+            textSeekBar2.text = "Угол"
 
             val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress).toString()

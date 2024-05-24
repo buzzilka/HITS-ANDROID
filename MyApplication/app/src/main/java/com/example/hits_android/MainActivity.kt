@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity() {
             } else {
                 val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
                 alertDialogBuilder.apply {
-                    setTitle("Error")
-                    setMessage("Go to settings and enable camera permission to use this feature.")
+                    setTitle("Ошибка")
+                    setMessage("Перейдите в настройки и разрешите доступ к камере, чтобы использовать эту функцию.")
                     setPositiveButton("OK") { dialog, _ ->
                         dialog.dismiss()
                     }
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     private val takePictureLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            Toast.makeText(this, "Photo taken", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Фото сделано.", Toast.LENGTH_SHORT).show()
         }
 
     private fun handleCameraPermission() {
@@ -125,8 +125,8 @@ class MainActivity : AppCompatActivity() {
             } ?: run {
                 val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
                 alertDialogBuilder.apply {
-                    setTitle("Error")
-                    setMessage("Image URI is null. Please select an image.")
+                    setTitle("Ошибка")
+                    setMessage("Нет изображения. Пожалуйста, выберете изображение.")
                     setPositiveButton("OK") { dialog, _ ->
                         dialog.dismiss()
                     }
@@ -166,8 +166,8 @@ class MainActivity : AppCompatActivity() {
                 } ?: run {
                     val alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
                     alertDialogBuilder.apply {
-                        setTitle("Error")
-                        setMessage("No camera app available.")
+                        setTitle("Ошибка")
+                        setMessage("Камера недоступна.")
                         setPositiveButton("OK") { dialog, _ ->
                             dialog.dismiss()
                         }
