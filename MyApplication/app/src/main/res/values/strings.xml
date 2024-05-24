@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">hits-android</string>
+    <string name="redact">Редактировать</string>
+    <string name="spline">Сплайны</string>
 </resources>

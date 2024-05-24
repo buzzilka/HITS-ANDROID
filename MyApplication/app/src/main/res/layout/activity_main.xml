@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <ImageButton
@@ -14,11 +15,14 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/buttonshape"
         android:contentDescription="camera"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/redact"
         app:layout_constraintEnd_toStartOf="@+id/gallery"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_camera"
+        app:layout_constraintTop_toBottomOf="@+id/currentImage"
+        app:srcCompat="@drawable/camera"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
@@ -26,13 +30,17 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/buttonshape"
         android:contentDescription="gallery"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/redact"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/camera"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
+        app:layout_constraintTop_toBottomOf="@+id/currentImage"
+        app:srcCompat="@drawable/gallery"
         tools:ignore="MissingConstraints" />
 
     <Button
@@ -41,13 +49,21 @@
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:text="Редактировать"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="@color/purple"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="@string/redact"
+        android:textColor="@color/purple"
+        android:textSize="20sp"
+        android:textColorLink="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintTop_toBottomOf="@+id/camera"
         tools:ignore="MissingConstraints" />
 
     <ImageView
@@ -55,14 +71,18 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="80dp"
-        app:layout_constraintBottom_toTopOf="@+id/redact"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/buttonshape"
+        android:src = "@drawable/deafault"
+        android:scaleType="centerInside"
+        android:padding="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.817" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button"
@@ -70,11 +90,19 @@
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:text="Сплайны"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="@color/purple"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="@string/spline"
+        android:textColor="@color/purple"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.945" />
+        app:layout_constraintTop_toBottomOf="@+id/redact" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
