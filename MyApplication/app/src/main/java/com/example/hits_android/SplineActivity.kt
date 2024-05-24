@@ -1,5 +1,6 @@
 package com.example.hits_android
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
@@ -27,6 +28,7 @@ import java.io.OutputStream
 class SplineActivity : AppCompatActivity() {
     private lateinit var myCustomView: MyCustomView
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
