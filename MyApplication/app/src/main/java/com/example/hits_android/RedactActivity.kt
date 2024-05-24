@@ -4,11 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.os.Bundle
-import android.os.Handler
 import android.provider.MediaStore
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -99,12 +96,12 @@ class RedactActivity : AppCompatActivity() {
         val valSeekBar1: TextView = findViewById(R.id.valSeekBar1)
         val valSeekBar3: TextView = findViewById(R.id.valSeekBar3)
 
-        var changeList = ArrayList<Bitmap>()
+        val changeList = ArrayList<Bitmap>()
 
         fun regVisibile() {
             seekBar2.visibility = View.VISIBLE
             textSeekBar2.visibility = View.VISIBLE
-            textSeekBar2.text = "Intencity"
+            textSeekBar2.text = "Intensity"
             valSeekBar2.visibility = View.VISIBLE
             buttonApply.visibility = View.VISIBLE
             seekBar1.visibility = View.GONE
@@ -758,10 +755,10 @@ class RedactActivity : AppCompatActivity() {
                 changeBitmap = rotate.rotate(originalBitmap, angleFor90.toFloat())
                 image.setImageBitmap(changeBitmap)
             }
-            angleFor90 += 90
             if (angleFor90 == 0) {
                 angleFor90 = 90
             }
+            angleFor90 += 90
         }
 
 
