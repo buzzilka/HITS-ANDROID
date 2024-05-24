@@ -20,8 +20,6 @@ class Unsharp {
             -1.0, -1.0, -1.0
         )
 
-        val sumKernel = kernel.sum()
-
         val pixels = IntArray(image.width * image.height)
         image.getPixels(pixels, 0, image.width, 0, 0, image.width, image.height)
 

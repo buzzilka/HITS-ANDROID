@@ -1,31 +1,30 @@
 package com.example.hits_android.filters
 
 import android.graphics.Bitmap
-import android.graphics.Color
-import kotlinx.coroutines.*
-import kotlin.math.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlin.math.exp
+import kotlin.math.sqrt
 
 class Gauss {
     suspend fun gaussianBlur(image: Bitmap, radius: Int, progressCallback: () -> Unit): Bitmap = coroutineScope {
-
         val kernel = calculateKernel(radius)
-
         val width = image.width
         val height = image.height
         val resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val pixels = IntArray(width * height)
         image.getPixels(pixels, 0, width, 0, 0, width, height)
 
-        val horizontalPass = IntArray(width * height)
-        val verticalPass = IntArray(width * height)
-
         val numChunks = (Runtime.getRuntime().availableProcessors() * 2).coerceAtLeast(16)
         val chunkSize = height / numChunks
 
-        val horizontalJobs = (0 until numChunks).map { i ->
+        val jobs = (0 until numChunks).map { i ->
             async(Dispatchers.Default) {
                 val startY = i * chunkSize
                 val endY = if (i == numChunks - 1) height else (i + 1) * chunkSize
+                val blurredChunk = IntArray(width * (endY - startY))
                 for (y in startY until endY) {
                     for (x in 0 until width) {
                         var redSum = 0.0
@@ -39,38 +38,21 @@ class Gauss {
                             greenSum += (color shr 8 and 0xFF) * weight
                             blueSum += (color and 0xFF) * weight
                         }
-                        horizontalPass[y * width + x] = (0xFF shl 24) or (redSum.roundToInt() shl 16) or (greenSum.roundToInt() shl 8) or blueSum.roundToInt()
+                        blurredChunk[(y - startY) * width + x] = (0xFF shl 24) or (redSum.toInt() shl 16) or (greenSum.toInt() shl 8) or blueSum.toInt()
                     }
                 }
+                blurredChunk
             }
         }
-        horizontalJobs.awaitAll()
+        val chunks = jobs.awaitAll()
 
-        val verticalJobs = (0 until numChunks).map { i ->
-            async(Dispatchers.Default) {
-                val startX = i * chunkSize
-                val endX = if (i == numChunks - 1) width else (i + 1) * chunkSize
-                for (x in startX until endX) {
-                    for (y in 0 until height) {
-                        var redSum = 0.0
-                        var greenSum = 0.0
-                        var blueSum = 0.0
-                        for (k in -radius..radius) {
-                            val currentY = (y + k).coerceIn(0, height - 1)
-                            val color = horizontalPass[currentY * width + x]
-                            val weight = kernel[k + radius]
-                            redSum += (color shr 16 and 0xFF) * weight
-                            greenSum += (color shr 8 and 0xFF) * weight
-                            blueSum += (color and 0xFF) * weight
-                        }
-                        verticalPass[y * width + x] = (0xFF shl 24) or (redSum.roundToInt() shl 16) or (greenSum.roundToInt() shl 8) or blueSum.roundToInt()
-                    }
-                }
-            }
+        val finalResult = IntArray(width * height)
+        var offset = 0
+        for (chunk in chunks) {
+            chunk.copyInto(finalResult, offset)
+            offset += chunk.size
         }
-        verticalJobs.awaitAll()
-
-        resultBitmap.setPixels(verticalPass, 0, width, 0, 0, width, height)
+        resultBitmap.setPixels(finalResult, 0, width, 0, 0, width, height)
         progressCallback()
         return@coroutineScope resultBitmap
     }
