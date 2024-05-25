@@ -690,7 +690,7 @@ class RedactActivity : AppCompatActivity() {
             val valSeekBar2: TextView = findViewById(R.id.valSeekBar2)
             valSeekBar2.text = (seekBar2.progress).toString()
 
-            val rotate = Rotate()
+            val rotate = Rotate(this)
             lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = rotate.rotate(originalBitmap, seekBar2.progress.toFloat())
                 image.setImageBitmap(changeBitmap)
@@ -878,7 +878,7 @@ class RedactActivity : AppCompatActivity() {
         }
         var angleFor90 = 0
         buttonRotation90.setOnClickListener {
-            val rotate = Rotate()
+            val rotate = Rotate(this)
             angleFor90 += 90
             lifecycleScope.launch(Dispatchers.Main) {
                 changeBitmap = rotate.rotate(originalBitmap, angleFor90.toFloat())

@@ -1,12 +1,15 @@
 package com.example.hits_android.rotate
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
+import androidx.core.content.ContextCompat
+import com.example.hits_android.R
 import kotlinx.coroutines.*
 import kotlin.math.*
 
-class Rotate {
-    val color = Color.parseColor("#E8E8F9")
+class Rotate (context: Context){
+    val color = ContextCompat.getColor(context, R.color.background)
     suspend fun rotate(image: Bitmap, angle: Float): Bitmap = coroutineScope {
         val radians = Math.toRadians(angle.toDouble())
         val width = image.width
