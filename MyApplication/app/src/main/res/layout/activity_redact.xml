@@ -70,7 +70,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/rotate"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/gauss"
@@ -81,7 +81,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/gauss"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/mosaic"
@@ -92,7 +92,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/mosaic"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/contrast"
@@ -103,7 +103,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/contrast"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/blackWhite"
@@ -112,10 +112,10 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
                 android:background="@drawable/buttonshape"
+                android:padding="16dp"
                 android:text="@string/blackWhite"
                 android:textColor="@color/purple"
-                android:textStyle="bold"
-                android:padding="16dp"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/invert"
@@ -126,7 +126,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/invert"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/red"
@@ -137,7 +137,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/red"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/green"
@@ -148,7 +148,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/green"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/blue"
@@ -159,7 +159,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/blue"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/sepia"
@@ -170,7 +170,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/sepia"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/unsharpedMask"
@@ -179,10 +179,10 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
                 android:background="@drawable/buttonshape"
+                android:padding="16dp"
                 android:text="@string/sharp"
                 android:textColor="@color/purple"
-                android:textStyle="bold"
-                android:padding="16dp"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/retouch"
@@ -193,7 +193,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/retouch"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/face"
@@ -204,7 +204,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/face"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/person"
@@ -215,7 +215,7 @@
                 android:background="@drawable/buttonshape"
                 android:text="@string/person"
                 android:textColor="@color/purple"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/scale"
@@ -224,10 +224,10 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"
                 android:background="@drawable/buttonshape"
+                android:padding="16dp"
                 android:text="@string/scaling"
                 android:textColor="@color/purple"
-                android:textStyle="bold"
-                android:padding="16dp"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
     </HorizontalScrollView>
@@ -409,7 +409,7 @@
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808"
+        app:layout_constraintVertical_bias="0.804"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -423,7 +423,7 @@
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.931"
+        app:layout_constraintVertical_bias="0.914"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -437,7 +437,7 @@
         app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.867"
+        app:layout_constraintVertical_bias="0.859"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -451,7 +451,7 @@
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toEndOf="@+id/seekBar1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808"
+        app:layout_constraintVertical_bias="0.804"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -465,7 +465,7 @@
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toEndOf="@+id/seekBar2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.867"
+        app:layout_constraintVertical_bias="0.859"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -475,11 +475,11 @@
         android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/rotation90"
+        app:layout_constraintEnd_toStartOf="@id/exit"
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toEndOf="@+id/seekBar3"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.931"
+        app:layout_constraintVertical_bias="0.914"
         tools:ignore="MissingConstraints" />
 
     <FrameLayout

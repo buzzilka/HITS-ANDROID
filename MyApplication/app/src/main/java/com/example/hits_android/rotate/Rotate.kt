@@ -6,7 +6,7 @@ import kotlinx.coroutines.*
 import kotlin.math.*
 
 class Rotate {
-
+    val color = Color.parseColor("#E8E8F9")
     suspend fun rotate(image: Bitmap, angle: Float): Bitmap = coroutineScope {
         val radians = Math.toRadians(angle.toDouble())
         val width = image.width
@@ -25,7 +25,7 @@ class Rotate {
         val originalPixels = IntArray(width * height)
         image.getPixels(originalPixels, 0, width, 0, 0, width, height)
 
-        val rotatedPixels = IntArray(newWidth * newHeight) { Color.parseColor("#E8E8F9") }
+        val rotatedPixels = IntArray(newWidth * newHeight) { color }
 
         val chunkSize = newHeight / 2
         val deferredResults = mutableListOf<Deferred<Unit>>()

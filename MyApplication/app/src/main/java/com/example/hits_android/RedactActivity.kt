@@ -573,15 +573,15 @@ class RedactActivity : AppCompatActivity() {
         fun applyRetouch() {
             changeList.add(originalBitmap)
 
-            seekBar2.visibility = View.GONE
-            textSeekBar2.visibility = View.GONE
-            valSeekBar2.visibility = View.GONE
+            seekBar3.visibility = View.GONE
+            textSeekBar3.visibility = View.GONE
+            valSeekBar3.visibility = View.GONE
             seekBar1.visibility = View.VISIBLE
             textSeekBar1.visibility = View.VISIBLE
             valSeekBar1.visibility = View.VISIBLE
-            seekBar3.visibility = View.VISIBLE
-            textSeekBar3.visibility = View.VISIBLE
-            valSeekBar3.visibility = View.VISIBLE
+            seekBar2.visibility = View.VISIBLE
+            textSeekBar2.visibility = View.VISIBLE
+            valSeekBar2.visibility = View.VISIBLE
 
             buttonApply.visibility = View.VISIBLE
             buttonExit.visibility = View.VISIBLE
@@ -589,16 +589,16 @@ class RedactActivity : AppCompatActivity() {
             buttonRotation90.visibility = View.GONE
 
             seekBar1.max = 100
-            seekBar3.max = 95
+            seekBar2.max = 95
 
             valSeekBar1.text = (seekBar1.progress).toString()
-            valSeekBar3.text = (seekBar3.progress + 5).toString()
+            valSeekBar2.text = (seekBar2.progress + 5).toString()
 
             textSeekBar1.text = "Интенс."
-            textSeekBar3.text = "Раз. кисти"
+            textSeekBar2.text = "Раз. кисти"
 
             var brushSize: Int = seekBar1.progress
-            var intensity: Int = seekBar3.progress
+            var intensity: Int = seekBar2.progress
 
             seekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
@@ -615,19 +615,19 @@ class RedactActivity : AppCompatActivity() {
                     valSeekBar1.text = (seekBar1.progress).toString()
                 }
             })
-            seekBar3.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            seekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    valSeekBar3.text = (seekBar3.progress + 5).toString()
+                    valSeekBar2.text = (seekBar2.progress + 5).toString()
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     brushSize = seekBar?.progress ?: 0
-                    valSeekBar3.text = (seekBar3.progress + 5).toString()
+                    valSeekBar2.text = (seekBar2.progress + 5).toString()
                 }
             })
 
